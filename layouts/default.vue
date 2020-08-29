@@ -1,10 +1,10 @@
 <template>
   <div>
-    <header class="p-8 text-center">
+    <header class="p-6 text-center">
       <h1>
         Ça vaut le coup ?
       </h1>
-      <p class="my-4">
+      <p class="my-4 leading-snug text-pink-900">
         Un calculateur de temps gagné<br>
         pour comprendre la puissance des effets cumulés.
       </p>
@@ -16,7 +16,7 @@
 <style lang="postcss">
 html,
 body {
-  @apply bg-blue-100;
+  @apply bg-pink-100 p-2;
 
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -29,20 +29,20 @@ body {
 }
 
 h1 {
-  @apply text-3xl font-semibold;
+  @apply text-3xl font-semibold text-pink-900;
 }
 
 h2 {
-  @apply text-lg font-semibold mb-2;
+  @apply text-lg font-semibold mb-2 text-pink-900;
 }
 
 textarea,
 input,
 select {
-  @apply px-4 py-2 leading-tight border-2 border-blue-400 rounded;
+  @apply px-4 py-2 leading-tight border-2 border-blue-300 rounded;
 
   &:focus {
-    @apply outline-none bg-white border-purple-500;
+    @apply outline-none bg-white border-pink-400;
   }
 }
 
@@ -59,6 +59,6 @@ select {
 }
 
 .select-container {
-  @apply relative inline-block w-32
+  @apply relative inline-block
 }
 </style>

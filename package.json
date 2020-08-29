@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^1.0.0",
+    "@ryki/datemath": "^1.2.6",
     "nuxt": "^2.14.0"
   },
   "devDependencies": {
