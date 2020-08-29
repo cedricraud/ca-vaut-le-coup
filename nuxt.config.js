@@ -59,5 +59,19 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
-  }
+  },
+  /*
+  ** Generate configuration
+  ** See https://fr.nuxtjs.org/api/configuration-generate/
+  */
+  generate: {
+    dir: 'public'
+  },
+  /*
+  ** See https://fr.nuxtjs.org/faq/github-pages
+  */
+  router: process.env.DEPLOY_ENV === 'GL_PAGES'
+    ? {
+      base: '/totally-worth-it/'
+    } : undefined
 }
