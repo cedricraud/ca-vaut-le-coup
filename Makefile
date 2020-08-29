@@ -10,3 +10,6 @@ run_prod:
 
 package:
 	npm run generate
+
+deploy: package
+	git push
