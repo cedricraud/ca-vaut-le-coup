@@ -32,7 +32,7 @@
           <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
         </div>
       </div>
-      , cette optimisation vous fera gagner :
+      , cette optimisation vous fera gagner :
     </div>
     <div class="text-center">
       <!-- <div class="inline-flex items-center mt-2 text-sm text-gray-700">
@@ -43,14 +43,14 @@
         </div>
         <label>Temps de vie</label>
       </div> -->
-      <div class="mt-4 text-xl font-semibold tracking-tight text-blue-600">
+      <div class="mt-4 text-2xl font-semibold tracking-tight text-blue-600">
         {{ formatDuration('seconds', 'seconde') }}.
       </div>
-      <div class="grid items-center grid-cols-2 gap-6 mt-6 -ml-6 text-lg font-medium">
+      <div class="grid items-center grid-cols-2 gap-6 mt-4 -ml-6 text-lg font-medium">
         <div class="text-right">
           Soit
         </div>
-        <div class="text-left">
+        <div class="font-medium text-left">
           {{ formatDuration('minutes', 'minute') }}<br>
           {{ formatDuration('hours', 'heure') }}<br>
           {{ formatDuration('days', 'jour') }}<br>
@@ -58,7 +58,7 @@
           {{ formatDuration('months', 'mois') }}<br>
         </div>
       </div>
-      <div class="mt-2" title="Au rythme d’une blague toutes les 1 minutes ½ !">
+      <div class="mt-2" title="Au rythme d’une blague toutes les 1 minute ½ !">
         (Ou le temps pour raconter <span class="text-lg font-medium">{{ formatJokeAmounts() }}</span> de qualité discutable.)
       </div>
     </div>

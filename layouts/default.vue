@@ -14,13 +14,14 @@
 </template>
 
 <style lang="postcss">
+@import url(https://rsms.me/inter/inter.css);
+
 html,
 body {
-  @apply bg-pink-100 p-2;
-
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+  @apply bg-pink-100 bg-opacity-25 p-2;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
@@ -29,17 +30,17 @@ body {
 }
 
 h1 {
-  @apply text-3xl font-semibold text-pink-900;
+  @apply text-3xl font-semibold text-pink-900 tracking-tight;
 }
 
 h2 {
-  @apply text-lg font-semibold mb-2 text-pink-900;
+  @apply text-lg font-semibold mb-2 text-pink-900 tracking-tight;
 }
 
 textarea,
 input,
 select {
-  @apply px-4 py-2 leading-tight border-2 border-blue-300 rounded;
+  @apply px-4 py-2 leading-tight border-2 border-gray-400 rounded transition-all duration-200;
 
   &:focus {
     @apply outline-none bg-white border-pink-400;

@@ -2,12 +2,12 @@
   <div class="grid max-w-screen-lg grid-cols-1 gap-4 mx-auto md:grid-cols-8">
     <Form
       v-model="model"
-      class="p-3 pb-6 bg-white border-2 border-pink-200 rounded md:col-span-3"
+      class="p-3 pb-6 bg-pink-100 border-2 border-pink-200 rounded md:col-span-3"
       @input="computeDuration"
     />
     <Result
       v-model="model"
-      class="p-3 pb-6 bg-white border-2 border-pink-200 rounded md:col-span-5"
+      class="p-3 pb-6 bg-pink-100 border-2 border-pink-200 rounded md:col-span-5"
       :total-duration="totalDuration"
       @input="computeDuration"
     />
@@ -33,7 +33,7 @@ export default Vue.extend({
       totalDuration: { seconds: 0 }
     }
   },
-  mounted () {
+  created () {
     this.computeDuration()
   },
   methods: {
@@ -47,7 +47,6 @@ export default Vue.extend({
       const totalYearlySeconds = durationSeconds * frequencyDays
       const totalSeconds = totalYearlySeconds * horizonValue
       this.totalDuration = { seconds: totalSeconds }
-      console.log(durationSeconds, 'seconds', frequencyDays, 'days', totalYearlySeconds, 'seconds spent yearly', totalSeconds, `seconds spent in ${horizonValue} years`)
     }
   }
 })

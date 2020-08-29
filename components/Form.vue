@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h2>De quelle tâche parle-t-on ?</h2>
+    <h2>De quelle tâche parle-t-on ?</h2>
     <textarea
-      class="placeholder-gray-800"
+      class="placeholder-gray-600"
       placeholder="Ouvrir un fichier avec Alfred plutôt qu'en naviguant dossier par dossier."
     />
 
     <h2 class="mt-6">
-      Combien de temps vous ferait-elle gagner ?
+      Combien de temps vous ferait-elle gagner ?
     </h2>
     <div class="text-center">
       <input
@@ -44,7 +44,7 @@
     <h2 />
 
     <h2 class="mt-6">
-      Quelle est sa fréquence ?
+      Quelle est sa fréquence ?
     </h2>
     <div class="text-center">
       <input
