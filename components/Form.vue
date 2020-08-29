@@ -16,6 +16,8 @@
         type="number"
         step="1"
         min="0"
+        inputmode="numeric"
+        pattern="[0-9]*"
         @input="emitModel"
       >
       <div class="w-32 select-container">
@@ -53,6 +55,8 @@
         type="number"
         step="1"
         min="0"
+        inputmode="numeric"
+        pattern="[0-9]*"
         @input="emitModel"
       >
       <span class="px-1">fois</span>
