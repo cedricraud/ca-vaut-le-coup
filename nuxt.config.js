@@ -17,6 +17,8 @@ export default {
       { hid: 'description', name: 'description', content: 'Un calculateur de temps gagné pour comprendre la puissance des effets cumulés.' }
     ],
     link: [
+      { rel: 'stylesheet', href: 'https://rsms.me/inter/inter.css' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&display=swap' },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
     ]
   },

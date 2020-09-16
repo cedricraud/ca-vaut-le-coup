@@ -2,25 +2,28 @@
   <div>
     <header class="p-6 text-center">
       <h1>
-        Ça vaut le coup ?
+        <div>Ça vaut</div>
+        <div>le coup&nbsp;?</div>
       </h1>
-      <p class="my-4 leading-snug text-pink-900">
-        Un calculateur de temps gagné<br>
-        pour comprendre la puissance des effets cumulés.
-      </p>
+      <div class="mt-6 text-lg leading-snug text-blue-900">
+        <!-- <em>«&nbsp;Les petits ruisseaux font les grandes rivières.&nbsp;»</em> -->
+        <p>
+          Un calculateur de temps gagné pour comprendre<br>
+          que les petits ruisseaux font les grandes rivières.
+        </p>
+      </div>
     </header>
     <Nuxt />
   </div>
 </template>
 
-<style lang="postcss">
-@import url(https://rsms.me/inter/inter.css);
-
+<style lang="scss">
 html,
 body {
-  @apply bg-pink-100 bg-opacity-25 p-2;
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+  @apply p-2;
+  background: #eaf0f5; /* jonathanlefevre.com's blue is #C0D0E0 */
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   font-size: 15px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -30,20 +33,36 @@ body {
 }
 
 h1 {
-  @apply text-3xl font-semibold text-pink-900 tracking-tight;
+  font-family: "Rubik", sans-serif;
+  @apply text-5xl font-bold text-blue-800 tracking-tight mb-6;
+  text-shadow: 1px 1px 0 lighten(#c0d0e0, 0), 2px 2px 0 lighten(#c0d0e0, 2),
+    3px 3px 0 lighten(#c0d0e0, 4), 4px 4px 0 lighten(#c0d0e0, 6),
+    5px 5px 0 lighten(#c0d0e0, 8), 6px 6px 0 lighten(#c0d0e0, 10);
+
+  margin-left: -55px;
+  line-height: 40px;
+
+  div {
+    transform: rotate(-3deg);
+
+    &:last-child {
+      margin-left: 118px;
+    }
+  }
 }
 
 h2 {
-  @apply text-lg font-semibold mb-2 text-pink-900 tracking-tight;
+  font-family: "Rubik", sans-serif;
+  @apply text-lg font-medium mb-2 text-blue-800 tracking-tight;
 }
 
 textarea,
 input,
 select {
-  @apply px-4 py-2 leading-tight border-2 border-gray-400 rounded transition-all duration-200;
+  @apply px-4 py-2 leading-tight border-2 border-gray-500 rounded transition-all duration-200;
 
   &:focus {
-    @apply outline-none bg-white border-pink-400;
+    @apply outline-none bg-white border-indigo-400;
   }
 }
 
@@ -60,6 +79,15 @@ select {
 }
 
 .select-container {
-  @apply relative inline-block
+  @apply relative inline-block;
+}
+
+.box {
+  @apply p-3 pb-6 bg-white rounded-lg;
+  box-shadow: 1px 1px 0 rgba(#c0d0e0, 0.5), 5px 6px 0 rgba(#c0d0e0, 0.3);
+}
+
+.duration-label {
+  @apply tracking-tight tabular-nums;
 }
 </style>
