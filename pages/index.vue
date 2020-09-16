@@ -1,13 +1,13 @@
 <template>
-  <div class="grid max-w-screen-lg grid-cols-1 gap-4 mx-auto md:grid-cols-8">
+  <div class="grid max-w-screen-lg grid-cols-1 gap-6 mx-auto md:grid-cols-8">
     <Form
       v-model="model"
-      class="p-3 pb-6 bg-pink-100 border-2 border-pink-200 rounded md:col-span-3"
+      class="box md:col-span-3"
       @input="computeDuration"
     />
     <Result
       v-model="model"
-      class="p-3 pb-6 bg-pink-100 border-2 border-pink-200 rounded md:col-span-5"
+      class="box md:col-span-5"
       :total-duration="totalDuration"
       @input="computeDuration"
     />
@@ -28,7 +28,8 @@ export default Vue.extend({
         frequencyValue: 3,
         frequencyPeriod: 'days',
         horizonValue: 1,
-        horizonPeriod: 'years'
+        horizonPeriod: 'years',
+        isWorkingPeriod: false
       },
       totalDuration: { seconds: 0 }
     }
@@ -41,11 +42,19 @@ export default Vue.extend({
       return { [period]: value }
     },
     computeDuration () {
-      const { gainValue, gainPeriod, frequencyValue, frequencyPeriod, horizonValue } = this.model
+      const { gainValue, gainPeriod, frequencyValue, frequencyPeriod, horizonValue, isWorkingPeriod } = this.model
       const durationSeconds = durationToUnit(this.getDuration(gainValue, gainPeriod), 'seconds')
       const frequencyDays = frequencyValue * 365 / durationToUnit(this.getDuration(1, frequencyPeriod), 'days')
       const totalYearlySeconds = durationSeconds * frequencyDays
-      const totalSeconds = totalYearlySeconds * horizonValue
+      let totalSeconds = totalYearlySeconds * horizonValue
+      if (isWorkingPeriod) {
+        // https://www.juristique.org/social/duree-du-travail#Calcul_de_la_duree_du_travail_legale_annuelle_base_35H00
+        const theoriticalYearlyWorkHours = 1596
+        const theoriticalYearlyLifeHours = 365 * (24 - 7) // 6205 🤔
+        const workToLifeRatio = theoriticalYearlyWorkHours / theoriticalYearlyLifeHours
+        console.log(workToLifeRatio)
+        totalSeconds *= workToLifeRatio
+      }
       this.totalDuration = { seconds: totalSeconds }
     }
   }

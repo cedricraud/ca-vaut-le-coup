@@ -46,20 +46,31 @@
       <div class="mt-4 text-2xl font-semibold tracking-tight text-blue-600">
         {{ formatDuration('seconds', 'seconde') }}.
       </div>
-      <div class="grid items-center grid-cols-2 gap-6 mt-4 -ml-6 text-lg font-medium">
+      <div class="grid items-center grid-cols-2 gap-6 mt-4 -ml-32 text-lg font-medium">
         <div class="text-right">
           Soit
         </div>
-        <div class="font-medium text-left">
-          {{ formatDuration('minutes', 'minute') }}<br>
-          {{ formatDuration('hours', 'heure') }}<br>
-          {{ formatDuration('days', 'jour') }}<br>
-          {{ formatDuration('weeks', 'semaine') }}<br>
-          {{ formatDuration('months', 'mois') }}<br>
+        <div class="font-medium text-left duration-label">
+          <table>
+            <tbody>
+              <tr
+                v-for="(name, period) in periods"
+                v-if="isDurationSignificant(period)"
+                :key="period"
+              >
+                <td class="pr-1 text-right">
+                  {{ formatDurationParts(period, name)[0] }}
+                </td>
+                <td>
+                  {{ formatDurationParts(period, name)[1] }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <div class="mt-2" title="Au rythme d’une blague toutes les 1 minute ½ !">
-        (Ou le temps pour raconter <span class="text-lg font-medium">{{ formatJokeAmounts() }}</span> de qualité discutable.)
+        (Ou le temps pour raconter <span class="text-lg font-medium duration-label">{{ formatJokeAmounts() }}</span> de qualité discutable.)
       </div>
     </div>
 
@@ -110,6 +121,15 @@ import Vue from 'vue'
 // @ts-ignore
 import { durationToUnit } from '@ryki/datemath'
 
+const PERIODS = {
+  seconds: 'seconde',
+  minutes: 'minute',
+  hours: 'heure',
+  days: 'jour',
+  weeks: 'semaine',
+  months: 'mois'
+}
+
 export default Vue.extend({
   props: {
     value: {
@@ -126,6 +146,11 @@ export default Vue.extend({
       model: {}
     }
   },
+  computed: {
+    periods () {
+      return PERIODS
+    }
+  },
   watch: {
     value: 'initModel'
   },
@@ -140,13 +165,34 @@ export default Vue.extend({
       this.$emit('input', this.model)
     },
     formatJokeAmounts () {
-      const duration = Math.round(durationToUnit(this.totalDuration, 'seconds') / 90)
+      const duration = Math.round(
+        durationToUnit(this.totalDuration, 'seconds') / 90
+      )
       const name = 'blague'
-      return `${duration.toLocaleString()} ${name}${duration > 1 && name[name.length - 1] !== 's' ? 's' : ''}`
+      return `${duration.toLocaleString()} ${name}${
+        duration > 1 && name[name.length - 1] !== 's' ? 's' : ''
+      }`
+    },
+    isDurationSignificant (unit: String) {
+      const duration = durationToUnit(this.totalDuration, unit)
+      return duration >= 0.1
+    },
+    formatDurationParts (unit: string, name: string) {
+      const duration = durationToUnit(this.totalDuration, unit)
+      const locale = 'fr-FR'
+      const atomicUnits = ['seconds', 'minutes']
+      const options = {
+        maximumFractionDigits: atomicUnits.includes(unit) ? 0 : 1
+      }
+      const formattedDuration = duration.toLocaleString(locale, options)
+      const formattedName = `${name}${
+        duration > 1 && name[name.length - 1] !== 's' ? 's' : ''
+      }`
+
+      return [formattedDuration, formattedName]
     },
     formatDuration (unit: string, name: string) {
-      const duration = durationToUnit(this.totalDuration, unit)
-      return `${duration.toLocaleString()} ${name}${duration > 1 && name[name.length - 1] !== 's' ? 's' : ''}`
+      return this.formatDurationParts(unit, name).join(' ')
     }
   }
 })
