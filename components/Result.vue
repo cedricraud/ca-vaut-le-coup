@@ -29,22 +29,31 @@
           <!-- <option>Autre…</option> -->
         </select>
         <div class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
-          <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+          <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+          </svg>
         </div>
       </div>
       , cette optimisation vous fera gagner :
     </div>
     <div class="text-center">
-      <!-- <div class="inline-flex items-center mt-2 text-sm text-gray-700">
-        <label>Temps de travail</label>
-        <div class="relative inline-block w-10 mx-2 align-middle transition duration-200 ease-in select-none">
-          <input id="toggle" type="checkbox" name="toggle" class="absolute block w-6 h-6 bg-white border-4 rounded-full appearance-none cursor-pointer toggle-checkbox">
-          <label for="toggle" class="block h-6 overflow-hidden bg-gray-300 rounded-full cursor-pointer toggle-label" />
-        </div>
+      <div class="inline-flex items-center mt-4 mb-1 text-gray-700" title="Le temps travaillé correspond à une semaine de 35 heures.">
         <label>Temps de vie</label>
-      </div> -->
-      <div class="mt-4 text-2xl font-semibold tracking-tight text-blue-600">
-        {{ formatDuration('seconds', 'seconde') }}.
+        <div class="relative inline-block w-10 mx-2 align-middle transition duration-200 ease-in">
+          <input
+            id="toggle"
+            v-model="model.isWorkingPeriod"
+            type="checkbox"
+            name="toggle"
+            class="absolute block w-6 h-6 bg-blue-800 border-none rounded-full appearance-none cursor-pointer toggle-checkbox focus:bg-blue-800"
+            @change="emitModel"
+          >
+          <label for="toggle" class="block h-6 overflow-hidden bg-gray-300 border border-gray-400 rounded-full cursor-pointer select-none toggle-label" />
+        </div>
+        <label>Temps de travail</label>
+      </div>
+      <div class="mt-4 text-2xl font-semibold text-blue-600 duration-label">
+        {{ formatDuration('seconds', 'seconde') }}
       </div>
       <div class="grid items-center grid-cols-2 gap-6 mt-4 -ml-32 text-lg font-medium">
         <div class="text-right">
