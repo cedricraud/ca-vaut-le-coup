@@ -5,12 +5,9 @@
         <div>Ça vaut</div>
         <div>le coup&nbsp;?</div>
       </h1>
-      <div class="mt-6 text-lg leading-snug text-blue-900">
-        <!-- <em>«&nbsp;Les petits ruisseaux font les grandes rivières.&nbsp;»</em> -->
-        <p>
-          Un calculateur de temps gagné pour comprendre<br>
-          que les petits ruisseaux font les grandes rivières.
-        </p>
+      <div class="mt-6 text-lg text-blue-900">
+        Un calculateur de temps gagné pour comprendre<br>
+        que les petits ruisseaux font les grandes rivières.
       </div>
     </header>
     <Nuxt />
@@ -20,8 +17,9 @@
 <style lang="scss">
 html,
 body {
-  @apply p-2;
+  @apply p-2 h-full;
   background: #eaf0f5; /* jonathanlefevre.com's blue is #C0D0E0 */
+  background: linear-gradient(to bottom, #eaf0f5, #dde6ee);
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   font-size: 15px;
@@ -84,7 +82,7 @@ select {
 
 .box {
   @apply p-3 pb-6 bg-white rounded-lg;
-  box-shadow: 1px 1px 0 rgba(#c0d0e0, 0.5), 5px 6px 0 rgba(#c0d0e0, 0.3);
+  box-shadow: 1px 1px 0 rgba(#c0d0e0, 0.6), 5px 6px 0 rgba(#c0d0e0, 0.4);
 }
 
 .duration-label {
