@@ -9,6 +9,7 @@ module.exports = {
   variants: {},
   plugins: [],
   future: {
+    purgeLayersByDefault: true,
     removeDeprecatedGapUtilities: true
   },
   purge: {
