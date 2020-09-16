@@ -37,7 +37,10 @@
       , cette optimisation vous fera gagner :
     </div>
     <div class="text-center">
-      <div class="inline-flex items-center mt-4 mb-1 text-gray-700" title="Le temps travaillé correspond à une semaine de 35 heures.">
+      <div
+        class="inline-flex items-center mt-4 mb-1 text-gray-700"
+        title="Le temps de travail est une estimation sur la base d’une semaine de 35 heures avec 5 semaines de congés par an."
+      >
         <label>Temps de vie</label>
         <div class="relative inline-block w-10 mx-2 align-middle transition duration-200 ease-in">
           <input
@@ -45,17 +48,17 @@
             v-model="model.isWorkingPeriod"
             type="checkbox"
             name="toggle"
-            class="absolute block w-6 h-6 bg-blue-800 border-none rounded-full appearance-none cursor-pointer toggle-checkbox focus:bg-blue-800"
+            class="absolute block w-6 h-6 bg-gray-600 border-none rounded-full appearance-none cursor-pointer toggle-checkbox focus:bg-indigo-400"
             @change="emitModel"
           >
-          <label for="toggle" class="block h-6 overflow-hidden bg-gray-300 border border-gray-400 rounded-full cursor-pointer select-none toggle-label" />
+          <label for="toggle" class="block h-6 overflow-hidden bg-white border-2 border-gray-500 rounded-full cursor-pointer select-none toggle-label" />
         </div>
         <label>Temps de travail</label>
       </div>
-      <div class="mt-4 text-2xl font-semibold text-blue-600 duration-label">
-        {{ formatDuration('seconds', 'seconde') }}
+      <div class="mt-4 text-3xl font-semibold text-blue-600 duration-label">
+        {{ formattedDuration }}
       </div>
-      <div class="grid items-center grid-cols-2 gap-6 mt-4 -ml-32 text-lg font-medium">
+      <div v-if="isDurationSignificant(Object.keys(periods)[0])" class="grid items-center grid-cols-2 gap-6 mt-4 -ml-32 text-lg font-medium">
         <div class="text-right">
           Soit
         </div>
@@ -64,14 +67,14 @@
             <tbody>
               <tr
                 v-for="(name, period) in periods"
-                v-if="isDurationSignificant(period)"
+                v-if="isDurationSignificant(period) && !formattedDuration.includes(name)"
                 :key="period"
               >
                 <td class="pr-1 text-right">
-                  {{ formatDurationParts(period, name)[0] }}
+                  {{ formatDurationParts(totalDuration, period, name)[0] }}
                 </td>
                 <td>
-                  {{ formatDurationParts(period, name)[1] }}
+                  {{ formatDurationParts(totalDuration, period, name)[1] }}
                 </td>
               </tr>
             </tbody>
@@ -158,6 +161,35 @@ export default Vue.extend({
   computed: {
     periods () {
       return PERIODS
+    },
+    formattedDuration () {
+      const periods = Object.keys(this.periods)
+      let formattedDuration:string = ''
+      for (let i = periods.length; i >= 0; i--) {
+        const period = periods[i]
+        const duration = durationToUnit(this.totalDuration, period)
+        if (duration >= 2 || i === 0) {
+          const isSplitDurationEnabled = false
+          const decimalDuration = duration - Math.floor(duration)
+          if (isSplitDurationEnabled && decimalDuration > 0 && i > 0) {
+            const previousPeriod = periods[i - 1]
+            const periodDuration = { [period]: Math.floor(duration) }
+            const previousPeriodDuration = { [period]: decimalDuration }
+            formattedDuration = [
+              // @ts-ignore
+              this.formatDuration(periodDuration, period, this.periods[period], true),
+              // @ts-ignore
+              this.formatDuration(previousPeriodDuration, previousPeriod, this.periods[previousPeriod], true)
+            ].join(' et ')
+          } else {
+            // @ts-ignore
+            formattedDuration = this.formatDuration(this.totalDuration, period, this.periods[period])
+          }
+          break
+        }
+      }
+
+      return formattedDuration
     }
   },
   watch: {
@@ -182,16 +214,16 @@ export default Vue.extend({
         duration > 1 && name[name.length - 1] !== 's' ? 's' : ''
       }`
     },
-    isDurationSignificant (unit: String) {
+    isDurationSignificant (unit: string) {
       const duration = durationToUnit(this.totalDuration, unit)
       return duration >= 0.1
     },
-    formatDurationParts (unit: string, name: string) {
-      const duration = durationToUnit(this.totalDuration, unit)
+    formatDurationParts (durationObject: Object, unit: string, name: string, isAtomic: boolean = false) {
+      const duration = durationToUnit(durationObject, unit)
       const locale = 'fr-FR'
-      const atomicUnits = ['seconds', 'minutes']
+      const unitIsAtomic = ['seconds', 'minutes'].includes(unit) || isAtomic
       const options = {
-        maximumFractionDigits: atomicUnits.includes(unit) ? 0 : 1
+        maximumFractionDigits: unitIsAtomic ? 0 : 1
       }
       const formattedDuration = duration.toLocaleString(locale, options)
       const formattedName = `${name}${
@@ -200,8 +232,8 @@ export default Vue.extend({
 
       return [formattedDuration, formattedName]
     },
-    formatDuration (unit: string, name: string) {
-      return this.formatDurationParts(unit, name).join(' ')
+    formatDuration (durationObject: Object, unit: string, name: string, isAtomic: boolean = false) {
+      return this.formatDurationParts(durationObject, unit, name, isAtomic).join(' ')
     }
   }
 })
