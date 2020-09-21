@@ -25,9 +25,9 @@ export default Vue.extend({
       model: {
         gainValue: 15,
         gainPeriod: 'seconds',
-        frequencyValue: 3,
+        frequencyValue: 5,
         frequencyPeriod: 'days',
-        horizonValue: 1,
+        horizonValue: 5,
         horizonPeriod: 'years',
         isWorkingPeriod: false
       },
