@@ -34,7 +34,7 @@
           </svg>
         </div>
       </div>
-      , cette optimisation vous fera gagner :
+      , cette optimisation vous fera gagner&nbsp;:
     </div>
     <div class="text-center">
       <div
@@ -58,7 +58,7 @@
       <div class="mt-4 text-3xl font-semibold text-blue-600 duration-label">
         {{ formattedDuration }}
       </div>
-      <div v-if="isDurationSignificant(Object.keys(periods)[0])" class="grid items-center grid-cols-2 gap-6 mt-4 -ml-32 text-lg font-medium">
+      <div v-if="visiblePeriods.length" class="grid items-center grid-cols-2 gap-6 mt-4 -ml-32 text-lg font-medium">
         <div class="text-right">
           Soit
         </div>
@@ -66,8 +66,7 @@
           <table>
             <tbody>
               <tr
-                v-for="(name, period) in periods"
-                v-if="isDurationSignificant(period) && !formattedDuration.includes(name)"
+                v-for="[period, name] in visiblePeriods"
                 :key="period"
               >
                 <td class="pr-1 text-right">
@@ -81,8 +80,8 @@
           </table>
         </div>
       </div>
-      <div class="mt-2" title="Au rythme d’une blague toutes les 1 minute ½ !">
-        (Ou le temps pour raconter <span class="text-lg font-medium duration-label">{{ formatJokeAmounts() }}</span> de qualité discutable.)
+      <div v-if="Number.parseInt(formattedJokes)" class="mt-2" title="Au rythme d’une blague toutes les 1 minute ½ !">
+        (Ou le temps pour raconter <span class="text-lg font-medium duration-label">{{ formattedJokes }}</span> de qualité discutable.)
       </div>
     </div>
 
@@ -129,8 +128,8 @@
 </template>
 
 <script lang="ts">
+// @ts-nocheck
 import Vue from 'vue'
-// @ts-ignore
 import { durationToUnit } from '@ryki/datemath'
 
 const PERIODS = {
@@ -162,6 +161,24 @@ export default Vue.extend({
     periods () {
       return PERIODS
     },
+    visiblePeriods () {
+      return Object.keys(this.periods).reduce((memo, period) => {
+        const name = PERIODS[period]
+        if (this.isDurationSignificant(period) && !this.formattedDuration.includes(name)) {
+          memo.push([period, name])
+        }
+        return memo
+      }, [])
+    },
+    formattedJokes () {
+      const duration = Math.round(
+        durationToUnit(this.totalDuration, 'seconds') / 90
+      )
+      const name = 'blague'
+      return `${duration.toLocaleString()} ${name}${
+        duration > 1 && name[name.length - 1] !== 's' ? 's' : ''
+      }`
+    },
     formattedDuration () {
       const periods = Object.keys(this.periods)
       let formattedDuration:string = ''
@@ -176,13 +193,12 @@ export default Vue.extend({
             const periodDuration = { [period]: Math.floor(duration) }
             const previousPeriodDuration = { [period]: decimalDuration }
             formattedDuration = [
-              // @ts-ignore
+
               this.formatDuration(periodDuration, period, this.periods[period], true),
-              // @ts-ignore
+
               this.formatDuration(previousPeriodDuration, previousPeriod, this.periods[previousPeriod], true)
             ].join(' et ')
           } else {
-            // @ts-ignore
             formattedDuration = this.formatDuration(this.totalDuration, period, this.periods[period])
           }
           break
@@ -205,23 +221,17 @@ export default Vue.extend({
     emitModel () {
       this.$emit('input', this.model)
     },
-    formatJokeAmounts () {
-      const duration = Math.round(
-        durationToUnit(this.totalDuration, 'seconds') / 90
-      )
-      const name = 'blague'
-      return `${duration.toLocaleString()} ${name}${
-        duration > 1 && name[name.length - 1] !== 's' ? 's' : ''
-      }`
+    isDurationAtomic (unit: string) {
+      return ['seconds', 'minutes'].includes(unit)
     },
     isDurationSignificant (unit: string) {
       const duration = durationToUnit(this.totalDuration, unit)
-      return duration >= 0.1
+      return duration >= (this.isDurationAtomic(unit) ? 1 : 0.1)
     },
     formatDurationParts (durationObject: Object, unit: string, name: string, isAtomic: boolean = false) {
       const duration = durationToUnit(durationObject, unit)
       const locale = 'fr-FR'
-      const unitIsAtomic = ['seconds', 'minutes'].includes(unit) || isAtomic
+      const unitIsAtomic = this.isDurationAtomic(unit) || isAtomic
       const options = {
         maximumFractionDigits: unitIsAtomic ? 0 : 1
       }

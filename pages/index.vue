@@ -44,7 +44,7 @@ export default Vue.extend({
     durationToUnit (duration:any, unit:string) {
       return durationToUnit(duration, unit, 1, new Date())
     },
-    computeDurations () {
+    computeDuration () {
       const { gainValue, gainPeriod, frequencyValue, frequencyPeriod, horizonValue, isWorkingPeriod } = this.model
       const durationSeconds = this.durationToUnit(this.getDuration(gainValue, gainPeriod), 'seconds')
       let frequencyYearlyDays = 365 / this.durationToUnit(this.getDuration(1, frequencyPeriod), 'days')
