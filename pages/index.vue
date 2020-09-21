@@ -41,13 +41,16 @@ export default Vue.extend({
     getDuration (value:number, period:string) {
       return { [period]: value }
     },
-    computeDuration () {
+    durationToUnit (duration:any, unit:string) {
+      return durationToUnit(duration, unit, 1, new Date())
+    },
+    computeDurations () {
       const { gainValue, gainPeriod, frequencyValue, frequencyPeriod, horizonValue, isWorkingPeriod } = this.model
-      const durationSeconds = durationToUnit(this.getDuration(gainValue, gainPeriod), 'seconds')
-      let frequencyYearlyDays = 365 / durationToUnit(this.getDuration(1, frequencyPeriod), 'days')
+      const durationSeconds = this.durationToUnit(this.getDuration(gainValue, gainPeriod), 'seconds')
+      let frequencyYearlyDays = 365 / this.durationToUnit(this.getDuration(1, frequencyPeriod), 'days')
       if (isWorkingPeriod && frequencyPeriod !== 'years') {
         // Theoritical working days per year (https://www.juristique.org/social/duree-du-travail#Calcul_de_la_duree_du_travail_legale_annuelle_base_35H00)
-        frequencyYearlyDays = 228 / durationToUnit(this.getDuration(1, frequencyPeriod), 'days')
+        frequencyYearlyDays = 228 / this.durationToUnit(this.getDuration(1, frequencyPeriod), 'days')
       }
       const frequencyDays = frequencyValue * frequencyYearlyDays
       const totalYearlySeconds = durationSeconds * frequencyDays
