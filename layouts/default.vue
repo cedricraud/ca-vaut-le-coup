@@ -11,6 +11,14 @@
       </div>
     </header>
     <Nuxt />
+    <footer class="p-6 text-center text-gray-600">
+      Conçu par
+      <a target="_blank" href="https://jonathanlefevre.com">Jonathan Lefèvre</a>
+      et
+      <a target="_blank" href="https://twitter.com/CedricRaud">Cédric Raud</a>,
+      inspiré par
+      <a target="_blank" href="https://xkcd.com/1205/">XKCD</a>.
+    </footer>
   </div>
 </template>
 
@@ -20,6 +28,8 @@ body {
   @apply p-2 h-full;
   background: #eaf0f5; /* jonathanlefevre.com's blue is #C0D0E0 */
   background: linear-gradient(to bottom, #eaf0f5, #dde6ee);
+  // heropatterns.com's Wiggle
+  // background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23bfd3e3' fill-opacity='0.23' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   font-size: 15px;
@@ -61,6 +71,14 @@ select {
 
   &:focus {
     @apply outline-none bg-white border-indigo-400;
+  }
+}
+
+a {
+  @apply inline-block border-gray-500 border-b leading-tight;
+
+  &:hover {
+    @apply text-blue-600 border-blue-500;
   }
 }
 

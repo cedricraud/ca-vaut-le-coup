@@ -85,45 +85,19 @@
       </div>
     </div>
 
-    <!-- <h2 class="mt-6 mb-0">
+    <h2 class="mt-6">
       Seuil de rentabilité
     </h2>
-    <div class="text-gray-700">
-      Au bout de combien de temps est-il rentable de mettre en place cette optimisation ?
-    </div>
+    <!-- <div class="text-gray-700">
+      Au bout de combien de temps gagnez-vous à mettre en place cette optimisation&nbsp;?
+    </div> -->
     <div class="mt-2">
       Sur un horizon de
-      <div class="w-auto select-container">
-        <select
-          v-model="model.frequencyValue"
-        >
-          <option>1 an</option>
-          <option>2 ans</option>
-          <option>3 ans</option>
-          <option>4 ans</option>
-          <option>5 ans</option>
-          <option>10 ans</option>
-          <option>Autre…</option>
-        </select>
-        <div class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
-          <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
-        </div>
-      </div>
-      , vous serez gagnant si cette optimisation vous prend moins de <span class="text-xl font-semibold tracking-tight text-blue-600">21 heures</span> à mettre en place.
+      <strong class="text-lg font-medium duration-label">{{ formatDuration({years: model.horizonValue}, 'years', 'an') }}</strong>,
+      vous serez gagnant si cette optimisation vous prend
+      moins&nbsp;de&nbsp;<span class="text-xl font-semibold text-blue-600 duration-label">21 heures</span>
+      à mettre en place.
     </div>
-    <div class="grid items-center grid-cols-2 gap-6 mt-6 -ml-6 text-lg font-medium">
-      <div class="text-right">
-        Soit
-      </div>
-      <div class="text-left">
-        1260 minutes<br>
-        3 jours de travail<br>
-        0,75 jour de vie<br>
-        0,27 semaine<br>
-        0,06 mois<br>
-      </div>
-    </div>
-    <img class="mx-auto mt-8 mb-2 border-2 border-blue-400 rounded-lg" src="https://dummyimage.com/350x200/fff/aaa"> -->
   </div>
 </template>
 
