@@ -195,9 +195,7 @@ export default Vue.extend({
             const periodDuration = { [period]: Math.floor(duration) }
             const previousPeriodDuration = { [period]: decimalDuration }
             formattedDuration = [
-
               this.formatDuration(periodDuration, period, this.periods[period], true),
-
               this.formatDuration(previousPeriodDuration, previousPeriod, this.periods[previousPeriod], true)
             ].join(' et ')
           } else {
@@ -252,14 +250,7 @@ export default Vue.extend({
 </script>
 
 <style lang="postcss" scoped>
-/* @apply rules for documentation, these do not work as inline style */
 .toggle-checkbox:checked {
   right: 0;
-  /* @apply: right-0 border-green-400;
-  border-color: #68D391; */
-}
-.toggle-checkbox:checked + .toggle-label {
-  /* @apply: bg-green-400;
-  background-color: #68D391; */
 }
 </style>
