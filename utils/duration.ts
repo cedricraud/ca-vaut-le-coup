@@ -10,16 +10,17 @@ function convertDuration (duration:any, unit:string) {
 }
 
 export function computeDuration (model:any) {
-  const { gainValue, gainPeriod, frequencyValue, frequencyPeriod, horizonValue, isWorkingPeriod } = model
+  const { gainValue, gainPeriod, amountValue, amountPeriod, horizonValue, isWorkingPeriod } = model
   const durationSeconds = convertDuration(getDuration(gainValue, gainPeriod), 'seconds')
-  let frequencyYearlyDays = 365 / convertDuration(getDuration(1, frequencyPeriod), 'days')
-  if (isWorkingPeriod && frequencyPeriod !== 'years') {
-    // Theoritical working days per year (https://www.juristique.org/social/duree-du-travail#Calcul_de_la_duree_du_travail_legale_annuelle_base_35H00)
-    frequencyYearlyDays = 228 / convertDuration(getDuration(1, frequencyPeriod), 'days')
+  let amountFactorPerYear = 365 / convertDuration(getDuration(1, amountPeriod), 'days')
+  if (isWorkingPeriod && amountPeriod !== 'years') {
+    // 228 theoretical working days per french year (https://www.juristique.org/social/duree-du-travail#Calcul_de_la_duree_du_travail_legale_annuelle_base_35H00)
+    // We ignore yearly periods because X times per year = X times per year, wether you're working or not.
+    amountFactorPerYear /= 365 / 228
   }
-  const frequencyDays = frequencyValue * frequencyYearlyDays
-  const totalYearlySeconds = durationSeconds * frequencyDays
-  const totalSeconds = totalYearlySeconds * horizonValue
+  const amountPerYear = amountValue * amountFactorPerYear
+  const secondsPerYear = durationSeconds * amountPerYear
+  const secondsPerYears = secondsPerYear * horizonValue
 
-  return { seconds: totalSeconds }
+  return { seconds: secondsPerYears }
 }

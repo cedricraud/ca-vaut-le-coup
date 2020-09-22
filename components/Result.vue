@@ -89,14 +89,42 @@
       Seuil de rentabilité
     </h2>
     <!-- <div class="text-gray-700">
-      Au bout de combien de temps gagnez-vous à mettre en place cette optimisation&nbsp;?
+      Au bout de combien de temps gagnez-vous à mettre en place cette optimisation&nbsp;? -> Mauvaise question
+      Si l'optimisation vous prend X temps, en combien de temps serez-vous gagnant ?
     </div> -->
     <div class="mt-2">
-      Sur un horizon de
-      <strong class="text-lg font-medium duration-label">{{ formatDuration({years: model.horizonValue}, 'years', 'an') }}</strong>,
-      vous serez gagnant si cette optimisation vous prend
-      moins&nbsp;de&nbsp;<span class="text-xl font-semibold text-blue-600 duration-label">21 heures</span>
-      à mettre en place.
+      Si cette optimisation vous prend
+      <input
+        v-model.number="model.optimizationValue"
+        class="mb-2"
+        type="number"
+        step="1"
+        min="1"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        @input="emitModel"
+      >
+      <div class="w-32 select-container">
+        <select
+          v-model="model.optimizationPeriod"
+          @change="emitModel"
+        >
+          <option value="seconds">
+            secondes
+          </option>
+          <option value="minutes">
+            minutes
+          </option>
+          <option value="hours">
+            heures
+          </option>
+        </select>
+        <div class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
+          <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+        </div>
+      </div>
+      à mettre en place,<br>
+      vous serez gagnant à partir de <span class="text-xl font-semibold text-blue-600 duration-label">21 heures</span>.
     </div>
   </div>
 </template>

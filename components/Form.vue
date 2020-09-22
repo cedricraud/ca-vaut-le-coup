@@ -47,7 +47,7 @@
     </h2>
     <div class="text-center">
       <input
-        v-model.number="model.frequencyValue"
+        v-model.number="model.amountValue"
         class=""
         type="number"
         step="1"
@@ -59,7 +59,7 @@
       <span class="px-1">fois</span>
       <div class="w-36 select-container">
         <select
-          v-model="model.frequencyPeriod"
+          v-model="model.amountPeriod"
           @change="emitModel"
         >
           <option value="days">

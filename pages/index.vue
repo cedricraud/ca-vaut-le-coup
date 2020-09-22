@@ -24,10 +24,12 @@ export default Vue.extend({
       model: {
         gainValue: 15,
         gainPeriod: 'seconds',
-        frequencyValue: 5,
-        frequencyPeriod: 'days',
+        amountValue: 5,
+        amountPeriod: 'days',
         horizonValue: 5,
         horizonPeriod: 'years',
+        optimizationValue: 30,
+        optimizationPeriod: 'minutes',
         isWorkingPeriod: false
       },
       totalDuration: { seconds: 0 }
