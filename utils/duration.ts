@@ -10,17 +10,21 @@ function convertDuration (duration:any, unit:string) {
 }
 
 export function computeDuration (model:any) {
-  const { gainValue, gainPeriod, amountValue, amountPeriod, horizonValue, isWorkingPeriod } = model
-  const durationSeconds = convertDuration(getDuration(gainValue, gainPeriod), 'seconds')
-  let amountFactorPerYear = 365 / convertDuration(getDuration(1, amountPeriod), 'days')
+  const { durationValue, durationPeriod, amountValue, amountPeriod, horizonValue, horizonPeriod, isWorkingPeriod } = model
+  const secondsPerEvent = convertDuration(getDuration(durationValue, durationPeriod), 'seconds')
+  const daysPerHorizon = convertDuration(getDuration(horizonValue, horizonPeriod), 'days')
+  const eventsPerDay = convertDuration(getDuration(amountValue, amountPeriod), 'days')
+  let secondsPerHorizon = secondsPerEvent * eventsPerDay * daysPerHorizon
+
   if (isWorkingPeriod && amountPeriod !== 'years') {
     // 228 theoretical working days per french year (https://www.juristique.org/social/duree-du-travail#Calcul_de_la_duree_du_travail_legale_annuelle_base_35H00)
-    // We ignore yearly periods because X times per year = X times per year, wether you're working or not.
-    amountFactorPerYear /= 365 / 228
+    // We ignore yearly periods because X times per year is X times per year, no matter you're working or not.
+    secondsPerHorizon /= 365 / 228
   }
-  const amountPerYear = amountValue * amountFactorPerYear
-  const secondsPerYear = durationSeconds * amountPerYear
-  const secondsPerYears = secondsPerYear * horizonValue
 
-  return { seconds: secondsPerYears }
+  return { seconds: secondsPerHorizon }
+}
+
+export function computeMinimumProfitableDuration (model: any) {
+
 }

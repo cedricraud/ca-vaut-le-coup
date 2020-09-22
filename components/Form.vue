@@ -11,7 +11,7 @@
     </h2>
     <div class="text-center">
       <input
-        v-model.number="model.gainValue"
+        v-model.number="model.durationValue"
         class=""
         type="number"
         step="1"
@@ -22,7 +22,7 @@
       >
       <div class="w-32 select-container">
         <select
-          v-model="model.gainPeriod"
+          v-model="model.durationPeriod"
           @change="emitModel"
         >
           <option value="seconds">

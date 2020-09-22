@@ -22,8 +22,8 @@ export default Vue.extend({
   data () {
     return {
       model: {
-        gainValue: 15,
-        gainPeriod: 'seconds',
+        durationValue: 15,
+        durationPeriod: 'seconds',
         amountValue: 5,
         amountPeriod: 'days',
         horizonValue: 5,
