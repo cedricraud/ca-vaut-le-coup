@@ -13,6 +13,8 @@
   "dependencies": {
     "@nuxt/typescript-runtime": "^2.0.0",
     "@ryki/datemath": "^1.3.4",
+    "d3": "^6.1.1",
+    "lodash.debounce": "^4.0.8",
     "nuxt": "^2.14.5"
   },
   "devDependencies": {

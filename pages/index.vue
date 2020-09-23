@@ -9,6 +9,7 @@
       v-model="model"
       class="box md:col-span-5"
       :total-duration="totalDuration"
+      :profitable-duration="profitableDuration"
       @input="computeDuration"
     />
   </div>
@@ -16,7 +17,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { computeDuration } from '@/utils/duration'
+import { computeDuration, computeProfitableDuration } from '@/utils/duration'
 
 export default Vue.extend({
   data () {
@@ -32,7 +33,8 @@ export default Vue.extend({
         optimizationPeriod: 'minutes',
         isWorkingPeriod: false
       },
-      totalDuration: { seconds: 0 }
+      totalDuration: { seconds: 0 },
+      profitableDuration: { seconds: 0 }
     }
   },
   created () {
@@ -41,6 +43,8 @@ export default Vue.extend({
   methods: {
     computeDuration () {
       this.totalDuration = computeDuration(this.model)
+      // @ts-ignore
+      this.profitableDuration = computeProfitableDuration(this.model)
     }
   }
 })

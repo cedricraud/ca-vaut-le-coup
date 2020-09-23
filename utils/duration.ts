@@ -13,7 +13,7 @@ export function computeDuration (model:any) {
   const { durationValue, durationPeriod, amountValue, amountPeriod, horizonValue, horizonPeriod, isWorkingPeriod } = model
   const secondsPerEvent = convertDuration(getDuration(durationValue, durationPeriod), 'seconds')
   const daysPerHorizon = convertDuration(getDuration(horizonValue, horizonPeriod), 'days')
-  const eventsPerDay = convertDuration(getDuration(amountValue, amountPeriod), 'days')
+  const eventsPerDay = amountValue / convertDuration(getDuration(1, amountPeriod), 'days')
   let secondsPerHorizon = secondsPerEvent * eventsPerDay * daysPerHorizon
 
   if (isWorkingPeriod && amountPeriod !== 'years') {
@@ -25,6 +25,41 @@ export function computeDuration (model:any) {
   return { seconds: secondsPerHorizon }
 }
 
-export function computeMinimumProfitableDuration (model: any) {
+const MAX_ITERATIONS = 9999
+export function computeProfitableDuration (model: any) {
+  const { amountPeriod, optimizationValue, optimizationPeriod } = model
+  const secondsPerOptimisation = convertDuration(getDuration(optimizationValue, optimizationPeriod), 'seconds')
+  const horizonPeriod = amountPeriod
+  let horizonValue = 0
+  let secondsPerHorizon = 0
+  while (secondsPerOptimisation > secondsPerHorizon && horizonValue < MAX_ITERATIONS) {
+    horizonValue++
+    secondsPerHorizon = computeDuration({ ...model, horizonValue, horizonPeriod }).seconds
+  }
+  if (horizonValue === MAX_ITERATIONS) {
+    horizonValue = Infinity
+  }
+  return getDuration(horizonValue, horizonPeriod)
+}
 
+export function computeGraphModel (graph: any, model: any) {
+  const { amountPeriod, optimizationValue, optimizationPeriod } = model
+  const secondsPerOptimisation = convertDuration(getDuration(optimizationValue, optimizationPeriod), 'seconds')
+  const secondsPerPeriod = computeDuration({ ...model, horizonValue: 1, horizonPeriod: amountPeriod }).seconds
+  const periods = Object.values(computeProfitableDuration(model))[0]
+
+  graph.data = []
+  for (let x = 0; x < periods + 2; x++) {
+    graph.data.push({
+      x,
+      y: x * secondsPerPeriod,
+      height: secondsPerPeriod,
+      label: `Machin ${x + 1}`
+    })
+  }
+  graph.optimisation = {
+    // y: periods * secondsPerPeriod,
+    y: secondsPerOptimisation,
+    label: `Truc ${secondsPerOptimisation}`
+  }
 }

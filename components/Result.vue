@@ -99,7 +99,7 @@
         class="mb-2"
         type="number"
         step="1"
-        min="1"
+        min="0"
         inputmode="numeric"
         pattern="[0-9]*"
         @input="emitModel"
@@ -123,8 +123,16 @@
           <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
         </div>
       </div>
-      à mettre en place,<br>
-      vous serez gagnant à partir de <span class="text-xl font-semibold text-blue-600 duration-label">21 heures</span>.
+      à mettre en place, vous serez gagnant
+      <template v-if="Number.parseInt(formattedProfitableDuration)">
+        à partir de
+        <span class="text-xl font-semibold text-blue-600 duration-label">{{ formattedProfitableDuration }}</span>.
+      </template>
+      <template v-else>
+        <span class="text-xl font-semibold text-blue-600 duration-label">immédiatement</span>.
+      </template>
+
+      <ProfitableGraph :model="model" />
     </div>
   </div>
 </template>
@@ -140,7 +148,8 @@ const PERIODS = {
   hours: 'heure',
   days: 'jour',
   weeks: 'semaine',
-  months: 'mois'
+  months: 'mois',
+  years: 'an'
 }
 
 export default Vue.extend({
@@ -150,6 +159,10 @@ export default Vue.extend({
       default () {}
     },
     totalDuration: {
+      type: Object,
+      default () {}
+    },
+    profitableDuration: {
       type: Object,
       default () {}
     }
@@ -180,6 +193,12 @@ export default Vue.extend({
       return `${duration.toLocaleString()} ${name}${
         duration > 1 && name[name.length - 1] !== 's' ? 's' : ''
       }`
+    },
+    formattedProfitableDuration () {
+      const profitableDuration = this.profitableDuration
+      const period = Object.keys(profitableDuration)[0]
+      const name = PERIODS[period]
+      return this.formatDuration(profitableDuration, period, name, true)
     },
     formattedDuration () {
       const periods = Object.keys(this.periods)
@@ -243,7 +262,7 @@ export default Vue.extend({
       return [formattedDuration, formattedName]
     },
     formatDuration (durationObject: Object, unit: string, name: string, isAtomic: boolean = false) {
-      return this.formatDurationParts(durationObject, unit, name, isAtomic).join(' ')
+      return this.formatDurationParts(durationObject, unit, name, isAtomic).join(' ')
     }
   }
 })
