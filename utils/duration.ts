@@ -1,11 +1,53 @@
 // @ts-ignore
 import { durationToUnit } from '@ryki/datemath'
 
+export const PERIODS = {
+  seconds: 'seconde',
+  minutes: 'minute',
+  hours: 'heure',
+  days: 'jour',
+  weeks: 'semaine',
+  months: 'mois',
+  years: 'an'
+}
+
+function isDurationAtomic (unit: string) {
+  return ['seconds', 'minutes'].includes(unit)
+}
+
+export function isDurationSignificant (durationObject: Object, unit: string) {
+  const duration = convertDuration(durationObject, unit)
+  return duration >= (isDurationAtomic(unit) ? 1 : 0.1)
+}
+
+export function formatDurationParts (durationObject: Object, unit: string, name: string, isAtomic: boolean = false) {
+  const duration = convertDuration(durationObject, unit)
+  const locale = 'fr-FR'
+  const unitIsAtomic = isDurationAtomic(unit) || isAtomic
+  const options = {
+    maximumFractionDigits: unitIsAtomic ? 0 : 1
+  }
+  const formattedDuration = duration.toLocaleString(locale, options)
+  const formattedName = `${name}${
+    duration > 1 && name[name.length - 1] !== 's' ? 's' : ''
+  }`
+
+  return [formattedDuration, formattedName]
+}
+
+export function formatDuration (durationObject: Object, unit: string, name: string, isAtomic: boolean = false) {
+  return formatDurationParts(durationObject, unit, name, isAtomic).join(' ')
+}
+
+export function formatSimpleDuration (duration: number, period: string) {
+  return formatDuration(getDuration(duration, period), period, (<any> PERIODS)[period], true)
+}
+
 function getDuration (value:number, period:string) {
   return { [period]: value }
 }
 
-function convertDuration (duration:any, unit:string) {
+export function convertDuration (duration:any, unit:string) {
   return durationToUnit(duration, unit, 1, new Date())
 }
 
@@ -36,30 +78,29 @@ export function computeProfitableDuration (model: any) {
     horizonValue++
     secondsPerHorizon = computeDuration({ ...model, horizonValue, horizonPeriod }).seconds
   }
-  if (horizonValue === MAX_ITERATIONS) {
-    horizonValue = Infinity
-  }
+
   return getDuration(horizonValue, horizonPeriod)
 }
 
 export function computeGraphModel (graph: any, model: any) {
   const { amountPeriod, optimizationValue, optimizationPeriod } = model
-  const secondsPerOptimisation = convertDuration(getDuration(optimizationValue, optimizationPeriod), 'seconds')
   const secondsPerPeriod = computeDuration({ ...model, horizonValue: 1, horizonPeriod: amountPeriod }).seconds
   const periods = Object.values(computeProfitableDuration(model))[0]
 
   graph.data = []
-  for (let x = 0; x < periods + 2; x++) {
+  // eslint-disable-next-line no-unmodified-loop-condition
+  for (let x = 0; (x < periods * 2.3) || (!periods && x === periods); x++) {
     graph.data.push({
       x,
       y: x * secondsPerPeriod,
-      height: secondsPerPeriod,
-      label: `Machin ${x + 1}`
+      height: secondsPerPeriod
     })
   }
-  graph.optimisation = {
-    // y: periods * secondsPerPeriod,
-    y: secondsPerOptimisation,
-    label: `Truc ${secondsPerOptimisation}`
+  graph.profitable = {
+    x: periods,
+    y: periods * secondsPerPeriod,
+    period: amountPeriod,
+    optimizationValue,
+    optimizationPeriod
   }
 }

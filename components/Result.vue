@@ -140,17 +140,7 @@
 <script lang="ts">
 // @ts-nocheck
 import Vue from 'vue'
-import { durationToUnit } from '@ryki/datemath'
-
-const PERIODS = {
-  seconds: 'seconde',
-  minutes: 'minute',
-  hours: 'heure',
-  days: 'jour',
-  weeks: 'semaine',
-  months: 'mois',
-  years: 'an'
-}
+import { PERIODS, convertDuration, isDurationSignificant, formatDuration, formatDurationParts } from '@/utils/duration'
 
 export default Vue.extend({
   props: {
@@ -179,7 +169,7 @@ export default Vue.extend({
     visiblePeriods () {
       return Object.keys(this.periods).reduce((memo, period) => {
         const name = PERIODS[period]
-        if (this.isDurationSignificant(period) && !this.formattedDuration.includes(name)) {
+        if (isDurationSignificant(this.totalDuration, period) && !this.formattedDuration.includes(name)) {
           memo.push([period, name])
         }
         return memo
@@ -187,7 +177,7 @@ export default Vue.extend({
     },
     formattedJokes () {
       const duration = Math.round(
-        durationToUnit(this.totalDuration, 'seconds') / 90
+        convertDuration(this.totalDuration, 'seconds') / 90
       )
       const name = 'blague'
       return `${duration.toLocaleString()} ${name}${
@@ -198,14 +188,14 @@ export default Vue.extend({
       const profitableDuration = this.profitableDuration
       const period = Object.keys(profitableDuration)[0]
       const name = PERIODS[period]
-      return this.formatDuration(profitableDuration, period, name, true)
+      return formatDuration(profitableDuration, period, name, true)
     },
     formattedDuration () {
       const periods = Object.keys(this.periods)
       let formattedDuration:string = ''
       for (let i = periods.length; i >= 0; i--) {
         const period = periods[i]
-        const duration = durationToUnit(this.totalDuration, period)
+        const duration = convertDuration(this.totalDuration, period)
         if (duration >= 2 || i === 0) {
           const isSplitDurationEnabled = false
           const decimalDuration = duration - Math.floor(duration)
@@ -214,11 +204,11 @@ export default Vue.extend({
             const periodDuration = { [period]: Math.floor(duration) }
             const previousPeriodDuration = { [period]: decimalDuration }
             formattedDuration = [
-              this.formatDuration(periodDuration, period, this.periods[period], true),
-              this.formatDuration(previousPeriodDuration, previousPeriod, this.periods[previousPeriod], true)
+              formatDuration(periodDuration, period, this.periods[period], true),
+              formatDuration(previousPeriodDuration, previousPeriod, this.periods[previousPeriod], true)
             ].join(' et ')
           } else {
-            formattedDuration = this.formatDuration(this.totalDuration, period, this.periods[period])
+            formattedDuration = formatDuration(this.totalDuration, period, this.periods[period])
           }
           break
         }
@@ -234,35 +224,12 @@ export default Vue.extend({
     this.initModel()
   },
   methods: {
+    formatDurationParts,
     initModel () {
       this.model = { ...this.value }
     },
     emitModel () {
       this.$emit('input', this.model)
-    },
-    isDurationAtomic (unit: string) {
-      return ['seconds', 'minutes'].includes(unit)
-    },
-    isDurationSignificant (unit: string) {
-      const duration = durationToUnit(this.totalDuration, unit)
-      return duration >= (this.isDurationAtomic(unit) ? 1 : 0.1)
-    },
-    formatDurationParts (durationObject: Object, unit: string, name: string, isAtomic: boolean = false) {
-      const duration = durationToUnit(durationObject, unit)
-      const locale = 'fr-FR'
-      const unitIsAtomic = this.isDurationAtomic(unit) || isAtomic
-      const options = {
-        maximumFractionDigits: unitIsAtomic ? 0 : 1
-      }
-      const formattedDuration = duration.toLocaleString(locale, options)
-      const formattedName = `${name}${
-        duration > 1 && name[name.length - 1] !== 's' ? 's' : ''
-      }`
-
-      return [formattedDuration, formattedName]
-    },
-    formatDuration (durationObject: Object, unit: string, name: string, isAtomic: boolean = false) {
-      return this.formatDurationParts(durationObject, unit, name, isAtomic).join(' ')
     }
   }
 })
