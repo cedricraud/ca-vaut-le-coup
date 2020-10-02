@@ -62,6 +62,6 @@ export default {
   ** See https://fr.nuxtjs.org/api/configuration-generate/
   */
   generate: {
-    dir: 'public'
+    dir: 'dist'
   }
 }
