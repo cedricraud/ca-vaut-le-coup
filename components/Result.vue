@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div class="small-inputs">
     <h2>Temps gagné</h2>
     <div>
       Sur un horizon de
       <div class="w-24 select-container">
         <select
           v-model.number="model.horizonValue"
+          class="py-1 mb-1 sm:mb-0 sm:py-2"
           @change="emitModel"
         >
           <option value="1">
@@ -34,12 +35,11 @@
           </svg>
         </div>
       </div>
-      , cette optimisation vous fera gagner&nbsp;:
+      cette optimisation vous fera gagner&nbsp;:
     </div>
     <div class="text-center">
       <div
         class="inline-flex items-center mt-4 mb-1 text-gray-700"
-        title="Le temps de travail est une estimation sur la base d’une semaine de 35 heures avec 5 semaines de congés par an."
       >
         <label>Temps de vie</label>
         <div class="relative inline-block w-10 mx-2 align-middle transition duration-200 ease-in">
@@ -53,23 +53,26 @@
           >
           <label for="toggle" class="block h-6 overflow-hidden bg-white border-2 border-gray-500 rounded-full cursor-pointer select-none toggle-label" />
         </div>
-        <label>Temps de travail</label>
+        <label
+          class="cursor-help"
+          title="Le temps de travail est une estimation sur la base d’une semaine de 35 heures avec 5 semaines de congés par an."
+        >Temps de travail</label>
       </div>
       <div class="mt-4 text-3xl font-semibold text-blue-600 duration-label">
         {{ formattedDuration }}
       </div>
-      <div v-if="visiblePeriods.length" class="grid items-center grid-cols-2 gap-6 mt-4 -ml-32 text-lg font-medium">
+      <div v-if="visiblePeriods.length" class="grid items-center grid-cols-2 gap-6 mt-4 -ml-32 text-lg">
         <div class="text-right">
           Soit
         </div>
-        <div class="font-medium text-left duration-label">
+        <div class="text-left duration-label">
           <table>
             <tbody>
               <tr
                 v-for="[period, name] in visiblePeriods"
                 :key="period"
               >
-                <td class="pr-1 text-right">
+                <td class="pr-1 font-semibold text-right">
                   {{ formatDurationParts(totalDuration, period, name)[0] }}
                 </td>
                 <td>
@@ -80,8 +83,12 @@
           </table>
         </div>
       </div>
-      <div v-if="Number.parseInt(formattedJokes)" class="mt-2" title="Au rythme d’une blague toutes les 1 minute ½ !">
-        (Ou le temps de raconter <span class="text-lg font-medium duration-label">{{ formattedJokes }}</span> de qualité discutable.)
+      <div
+        v-if="Number.parseInt(formattedJokes)"
+        class="mt-4 text-gray-700 duration-label"
+        title="Au rythme d’une blague toutes les 1 minute ½ !"
+      >
+        Ou le temps de raconter {{ formattedJokes }} de qualité discutable.
       </div>
     </div>
 
@@ -94,33 +101,39 @@
     </div> -->
     <div class="mt-2">
       Si cette optimisation vous prend
-      <input
-        v-model.number="model.optimizationValue"
-        class="mb-2"
-        type="number"
-        step="1"
-        min="0"
-        inputmode="numeric"
-        pattern="[0-9]*"
-        @input="emitModel"
-      >
-      <div class="w-32 select-container">
-        <select
-          v-model="model.optimizationPeriod"
-          @change="emitModel"
+      <div class="inline-block whitespace-no-wrap">
+        <input
+          v-model.number="model.optimizationValue"
+          type="number"
+          class="py-1 my-1 sm:py-2 sm:my-0"
+          step="1"
+          min="0"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          @focus="$event.target.select()"
+          @input="emitModel"
         >
-          <option value="seconds">
-            secondes
-          </option>
-          <option value="minutes">
-            minutes
-          </option>
-          <option value="hours">
-            heures
-          </option>
-        </select>
-        <div class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
-          <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+        <div class="w-32 select-container">
+          <select
+            v-model="model.optimizationPeriod"
+            class="py-1 my-1 sm:py-2 sm:my-0 sm:mb-1"
+            @change="emitModel"
+          >
+            <option value="seconds">
+              secondes
+            </option>
+            <option value="minutes">
+              minutes
+            </option>
+            <option value="hours">
+              heures
+            </option>
+          </select>
+          <div class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
+            <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+            </svg>
+          </div>
         </div>
       </div>
       à mettre en place, vous serez gagnant
@@ -140,7 +153,13 @@
 <script lang="ts">
 // @ts-nocheck
 import Vue from 'vue'
-import { PERIODS, convertDuration, isDurationSignificant, formatDuration, formatDurationParts } from '@/utils/duration'
+import {
+  PERIODS,
+  convertDuration,
+  isDurationSignificant,
+  formatDuration,
+  formatDurationParts
+} from '@/utils/duration'
 
 export default Vue.extend({
   props: {
@@ -169,7 +188,10 @@ export default Vue.extend({
     visiblePeriods () {
       return Object.keys(this.periods).reduce((memo, period) => {
         const name = PERIODS[period]
-        if (isDurationSignificant(this.totalDuration, period) && !this.formattedDuration.includes(name)) {
+        if (
+          isDurationSignificant(this.totalDuration, period) &&
+          !this.formattedDuration.includes(name)
+        ) {
           memo.push([period, name])
         }
         return memo
@@ -192,7 +214,7 @@ export default Vue.extend({
     },
     formattedDuration () {
       const periods = Object.keys(this.periods)
-      let formattedDuration:string = ''
+      let formattedDuration: string = ''
       for (let i = periods.length; i >= 0; i--) {
         const period = periods[i]
         const duration = convertDuration(this.totalDuration, period)
@@ -204,11 +226,25 @@ export default Vue.extend({
             const periodDuration = { [period]: Math.floor(duration) }
             const previousPeriodDuration = { [period]: decimalDuration }
             formattedDuration = [
-              formatDuration(periodDuration, period, this.periods[period], true),
-              formatDuration(previousPeriodDuration, previousPeriod, this.periods[previousPeriod], true)
+              formatDuration(
+                periodDuration,
+                period,
+                this.periods[period],
+                true
+              ),
+              formatDuration(
+                previousPeriodDuration,
+                previousPeriod,
+                this.periods[previousPeriod],
+                true
+              )
             ].join(' et ')
           } else {
-            formattedDuration = formatDuration(this.totalDuration, period, this.periods[period])
+            formattedDuration = formatDuration(
+              this.totalDuration,
+              period,
+              this.periods[period]
+            )
           }
           break
         }
@@ -235,7 +271,7 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="postcss" scoped>
+<style lang="scss" scoped>
 .toggle-checkbox:checked {
   right: 0;
 }

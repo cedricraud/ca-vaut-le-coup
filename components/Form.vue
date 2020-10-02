@@ -6,18 +6,18 @@
       placeholder="Ouvrir un fichier avec Alfred plutôt qu'en naviguant dossier par dossier."
     />
 
-    <h2 class="mt-6">
+    <h2 class="mt-6 tracking-tightest sm:tracking-tight">
       Combien de temps vous ferait-elle gagner&nbsp;?
     </h2>
     <div class="text-center">
       <input
         v-model.number="model.durationValue"
-        class=""
         type="number"
         step="1"
         min="1"
         inputmode="numeric"
         pattern="[0-9]*"
+        @focus="$event.target.select()"
         @input="emitModel"
       >
       <div class="w-32 select-container">
@@ -48,12 +48,12 @@
     <div class="text-center">
       <input
         v-model.number="model.amountValue"
-        class=""
         type="number"
         step="1"
         min="1"
         inputmode="numeric"
         pattern="[0-9]*"
+        @focus="$event.target.select()"
         @input="emitModel"
       >
       <span class="px-1">fois</span>

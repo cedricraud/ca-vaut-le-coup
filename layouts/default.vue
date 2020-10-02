@@ -5,13 +5,13 @@
         <div>Ça vaut</div>
         <div>le coup&nbsp;?</div>
       </h1>
-      <div class="mt-6 text-lg text-blue-900">
-        Un calculateur de temps gagné pour comprendre<br>
+      <div class="mx-auto mt-6 text-lg text-blue-900 slogan">
+        Un calculateur de temps gagné pour comprendre
         que les petits ruisseaux font les grandes rivières.
       </div>
     </header>
     <Nuxt />
-    <footer class="p-6 text-center text-gray-600">
+    <footer class="py-6 leading-relaxed text-center text-gray-600">
       Conçu par
       <a target="_blank" href="https://jonathanlefevre.com">Jonathan Lefèvre</a>
       et
@@ -25,7 +25,7 @@
 <style lang="scss">
 html,
 body {
-  @apply p-2 h-full;
+  @apply p-1 h-full;
   background: #eaf0f5; /* jonathanlefevre.com's blue is #C0D0E0 */
   background: linear-gradient(to bottom, #eaf0f5, #dde6ee);
   background-attachment: fixed;
@@ -68,7 +68,7 @@ h2 {
 textarea,
 input,
 select {
-  @apply px-4 py-2 leading-tight border-2 border-gray-500 rounded transition-all duration-200;
+  @apply appearance-none bg-white px-3 py-2 leading-tight border-2 border-gray-500 rounded transition-all duration-200;
 
   &:focus {
     @apply outline-none bg-white border-indigo-400;
@@ -88,7 +88,7 @@ textarea {
 }
 
 input {
-  @apply w-20;
+  @apply w-18 text-center;
 }
 
 select {
@@ -106,5 +106,9 @@ select {
 
 .duration-label {
   @apply tracking-tight tabular-nums;
+}
+
+.slogan {
+  max-width: 400px;
 }
 </style>

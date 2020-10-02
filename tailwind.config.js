@@ -8,7 +8,14 @@ module.exports = {
   theme: {
     extend: {
       spacing: {
+        18: '4.5rem',
         36: '9rem'
+      },
+      cursor: {
+        help: 'help'
+      },
+      letterSpacing: {
+        tightest: '-.075em'
       }
     }
   },
