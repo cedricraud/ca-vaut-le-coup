@@ -1,4 +1,4 @@
-# Totally worth it!
+# Ça vaut le coup?
 
 > Un calculateur de temps gagné pour comprendre la puissance des effets cumulés.
 

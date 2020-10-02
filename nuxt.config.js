@@ -63,12 +63,5 @@ export default {
   */
   generate: {
     dir: 'public'
-  },
-  /*
-  ** See https://fr.nuxtjs.org/faq/github-pages
-  */
-  router: process.env.DEPLOY_ENV === 'GL_PAGES'
-    ? {
-      base: '/totally-worth-it/'
-    } : undefined
+  }
 }
