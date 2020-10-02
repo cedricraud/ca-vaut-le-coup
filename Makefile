@@ -12,6 +12,4 @@ package:
 	npm run generate
 
 deploy: package
-	git add -A .
-	git commit -m 'Make package'
-	git push
+	npm run deploy
