@@ -40,7 +40,7 @@ export function formatDuration (durationObject: Object, unit: string, name: stri
 }
 
 export function formatSimpleDuration (duration: number, period: string) {
-  return formatDuration(getDuration(duration, period), period, (<any> PERIODS)[period], true)
+  return formatDuration(getDuration(duration, period), period, (<any> PERIODS)[period], false)
 }
 
 function getDuration (value:number, period:string) {

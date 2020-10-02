@@ -101,7 +101,7 @@ function renderGraph (graph) {
   node.y.range([0, viewport.innerHeight])
 
   const xAxisGenerator = d3.axisBottom(node.x)
-    .ticks(5)
+    .ticks(4)
     .tickSize(7)
     .tickFormat(formatXTick(graph))
   node.xAxis

@@ -81,7 +81,7 @@
         </div>
       </div>
       <div v-if="Number.parseInt(formattedJokes)" class="mt-2" title="Au rythme d’une blague toutes les 1 minute ½ !">
-        (Ou le temps pour raconter <span class="text-lg font-medium duration-label">{{ formattedJokes }}</span> de qualité discutable.)
+        (Ou le temps de raconter <span class="text-lg font-medium duration-label">{{ formattedJokes }}</span> de qualité discutable.)
       </div>
     </div>
 
