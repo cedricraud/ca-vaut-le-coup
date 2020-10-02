@@ -1,6 +1,13 @@
 
 export default {
   /*
+  ** Nuxt server
+  ** See https://nuxtjs.org/faq/host-port/#configure-in-nuxtconfigjs
+  */
+  server: {
+    host: '0.0.0.0'
+  },
+  /*
   ** Nuxt target
   ** See https://nuxtjs.org/api/configuration-target
   */
