@@ -13,3 +13,4 @@ package:
 
 deploy: package
 	npm run deploy
+	git push
