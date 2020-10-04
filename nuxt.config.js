@@ -21,12 +21,21 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
-      { hid: 'description', name: 'description', content: 'Un calculateur de temps gagné pour comprendre la puissance des effets cumulés.' }
+      { hid: 'description', name: 'description', content: 'Un calculateur de temps gagné pour comprendre que les petits ruisseaux font les grandes rivières.' },
+      { name: 'application-name', content: 'Ça vaut le coup ?' },
+      { name: 'msapplication-TileColor', content: '#FFFFFF' },
+      { name: 'msapplication-TileImage', content: '/mstile-144x144.png' },
+      { property: 'og:image', content: 'https://www.cvlc.fr/thumbnail.png' }
+
     ],
     link: [
       { rel: 'stylesheet', href: 'https://rsms.me/inter/inter.css' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Rubik:wght@500;700&display=swap' },
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'apple-touch-icon-precomposed', sizes: '144x144', href: '/apple-touch-icon-144x144.png' },
+      { rel: 'apple-touch-icon-precomposed', sizes: '152x152', href: '/apple-touch-icon-152x152.png' },
+      { rel: 'icon', type: 'image/png', href: '/favicon-32x32.png', sizes: '32x32' },
+      { rel: 'icon', type: 'image/png', href: '/favicon-16x16.png', sizes: '16x16' }
+
     ]
   },
   /*
