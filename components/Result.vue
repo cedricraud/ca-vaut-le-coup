@@ -305,6 +305,7 @@ export default Vue.extend({
         copy(url)
         this.isCopySuccess = true
       }
+      window.fathom && window.fathom.trackPageview()
     }
   }
 })

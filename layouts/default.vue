@@ -21,7 +21,6 @@
       inspiré par
       <a target="_blank" href="https://xkcd.com/1205/">XKCD</a>.
     </footer>
-    <script src="https://cdn.usefathom.com/script.js" spa="auto" site="BGUWSNNN" defer />
   </div>
 </template>
 
