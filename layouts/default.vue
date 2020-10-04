@@ -2,8 +2,10 @@
   <div>
     <header class="p-6 text-center">
       <h1>
-        <div>Ça vaut</div>
-        <div>le coup&nbsp;?</div>
+        <a class="raw" href="/">
+          <div>Ça vaut</div>
+          <div>le coup&nbsp;?</div>
+        </a>
       </h1>
       <div class="mx-auto mt-6 text-lg text-blue-900 slogan">
         Un calculateur de temps gagné pour comprendre
@@ -76,7 +78,7 @@ select {
   }
 }
 
-a {
+a:not(.raw) {
   @apply inline-block border-gray-500 border-b leading-tight;
 
   &:hover {

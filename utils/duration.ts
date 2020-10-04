@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 import { durationToUnit } from '@ryki/datemath'
 
 export const PERIODS = {
@@ -10,6 +10,13 @@ export const PERIODS = {
   months: 'mois',
   years: 'an'
 }
+export const INVERTED_PERIODS = Object.keys(PERIODS).reduce((ret: Object, key: string) => {
+  ret[PERIODS[key]] = key
+  return ret
+}, {})
+
+const DEFAULT_OPTIMIZATION_VALUE = 30
+const DEFAULT_OPTIMIZATION_PERIOD = 'minutes'
 
 function isDurationAtomic (unit: string) {
   return ['seconds', 'minutes'].includes(unit)
@@ -20,6 +27,12 @@ export function isDurationSignificant (durationObject: Object, unit: string) {
   return duration >= (isDurationAtomic(unit) ? 1 : 0.1)
 }
 
+function pluralize (name: string, amount: number) {
+  return `${name}${
+    amount > 1 && name[name.length - 1] !== 's' ? 's' : ''
+  }`
+}
+
 export function formatDurationParts (durationObject: Object, unit: string, name: string, isAtomic: boolean = false) {
   const duration = convertDuration(durationObject, unit)
   const locale = 'fr-FR'
@@ -28,9 +41,7 @@ export function formatDurationParts (durationObject: Object, unit: string, name:
     maximumFractionDigits: unitIsAtomic ? 0 : 1
   }
   const formattedDuration = duration.toLocaleString(locale, options)
-  const formattedName = `${name}${
-    duration > 1 && name[name.length - 1] !== 's' ? 's' : ''
-  }`
+  const formattedName = pluralize(name, duration)
 
   return [formattedDuration, formattedName]
 }
@@ -103,4 +114,59 @@ export function computeGraphModel (graph: any, model: any) {
     optimizationValue,
     optimizationPeriod
   }
+}
+
+function unformatPeriod (period: string) {
+  return INVERTED_PERIODS[period] || INVERTED_PERIODS[period.slice(0, -1)]
+}
+
+function formatPeriod (period: string, amount: numer = 1) {
+  return pluralize(PERIODS[period], amount)
+}
+
+// Based on https://gist.github.com/codeguy/6684588
+const SLUG_SEPARATOR = '-'
+const NEWLINE_SEPARATOR = '+'
+function slugify (text) {
+  return text
+    .toString()
+    .normalize('NFD') // split an accented letter in the base letter and the acent
+    .replace(/[\u0300-\u036F]/g, '') // remove all previously split accents
+    .trim()
+    .replace(/\n/gm, NEWLINE_SEPARATOR)
+    .replace(/[^A-Za-z0-9+ ]/g, '') // remove all chars not letters, numbers and spaces (to be replaced)
+    .replace(/\s+/g, SLUG_SEPARATOR)
+}
+
+function unslugify (text) {
+  return text
+    .toString()
+    .replace(new RegExp(`[${NEWLINE_SEPARATOR}]`, 'gm'), '\n')
+    .replace(new RegExp(SLUG_SEPARATOR, 'g'), ' ')
+}
+
+export function initPath (path) {
+  const pathParts = path.split('/')
+  const modelParts = (pathParts[1] || '').split('-')
+
+  if (modelParts.length === 6 || modelParts.length === 9) {
+    const task = unslugify(pathParts[2] || '')
+    const durationValue = +modelParts[0]
+    const durationPeriod = unformatPeriod(modelParts[1])
+    const amountValue = +modelParts[2]
+    const amountPeriod = unformatPeriod(modelParts[5])
+    const optimizationValue = modelParts[7] ? +modelParts[7] : DEFAULT_OPTIMIZATION_VALUE
+    const optimizationPeriod = modelParts[8] ? unformatPeriod(modelParts[8]) : DEFAULT_OPTIMIZATION_PERIOD
+
+    return { task, durationValue, durationPeriod, amountValue, amountPeriod, optimizationValue, optimizationPeriod }
+  } else {
+    return {}
+  }
+}
+
+export function generatePath (model: any) {
+  const { task, durationValue, durationPeriod, amountValue, amountPeriod, optimizationValue, optimizationPeriod } = model
+  const formattedOptimization = optimizationValue !== DEFAULT_OPTIMIZATION_VALUE || optimizationPeriod !== DEFAULT_OPTIMIZATION_PERIOD ? `-vs-${optimizationValue}-${formatPeriod(optimizationPeriod, optimizationValue)}` : ''
+  const formattedTask = slugify(task) ? '/' + slugify(task) : ''
+  return `/${durationValue}-${formatPeriod(durationPeriod, durationValue)}-${amountValue}-fois-par-${formatPeriod(amountPeriod)}${formattedOptimization}${formattedTask}`
 }

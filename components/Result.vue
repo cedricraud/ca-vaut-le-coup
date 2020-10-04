@@ -85,8 +85,8 @@
       </div>
       <div
         v-if="Number.parseInt(formattedJokes)"
-        class="mt-4 text-gray-700 duration-label"
-        title="Au rythme d’une blague toutes les 1 minute ½ !"
+        class="mt-4 text-gray-700 duration-label cursor-help"
+        title="Au rythme d’une blague toutes les minutes et demi !"
       >
         Ou le temps de raconter {{ formattedJokes }} de qualité discutable.
       </div>
@@ -139,6 +139,39 @@
       à mettre en place, vous serez gagnant à partir de :
 
       <ProfitableGraph :model="model" />
+
+      <div class="text-center">
+        <button
+          class="px-6 py-2 mx-auto mt-4 text-sm font-bold text-white uppercase bg-blue-600 border-b-4 border-blue-700 rounded focus:outline-none hover:bg-blue-500 hover:border-blue-600"
+          @click="share()"
+        >
+          <template v-if="!isCopySuccess">
+            Partager le lien
+            <svg
+              class="inline-block ml-1 -mr-1"
+              width="14"
+              height="14"
+              viewBox="0 0 20 20"
+            >
+              <path d="M326.612,185.391c59.747,59.809 58.927,155.698 0.36,214.59c-0.11,0.12 -0.24,0.25 -0.36,0.37l-67.2,67.2c-59.27,59.27 -155.699,59.262 -214.96,0c-59.27,-59.26 -59.27,-155.7 0,-214.96l37.106,-37.106c9.84,-9.84 26.786,-3.3 27.294,10.606c0.648,17.722 3.826,35.527 9.69,52.721c1.986,5.822 0.567,12.262 -3.783,16.612l-13.087,13.087c-28.026,28.026 -28.905,73.66 -1.155,101.96c28.024,28.579 74.086,28.749 102.325,0.51l67.2,-67.19c28.191,-28.191 28.073,-73.757 0,-101.83c-3.701,-3.694 -7.429,-6.564 -10.341,-8.569l-1.11781e-06,-7.67599e-07c-4.1772,-2.86848 -6.75296,-7.54245 -6.947,-12.606c-0.396,-10.567 3.348,-21.456 11.698,-29.806l21.054,-21.055c5.521,-5.521 14.182,-6.199 20.584,-1.731l-7.04334e-06,-4.91815e-06c7.33169,5.11949 14.1988,10.874 20.522,17.197Zm140.935,-140.942c-59.261,-59.262 -155.69,-59.27 -214.96,0l-67.2,67.2c-0.12,0.12 -0.25,0.25 -0.36,0.37c-58.566,58.892 -59.387,154.781 0.36,214.59l-7.58096e-06,-7.58084e-06c6.32281,6.32271 13.1896,12.0769 20.521,17.196c6.402,4.468 15.064,3.789 20.584,-1.731l21.054,-21.055c8.35,-8.35 12.094,-19.239 11.698,-29.806l-1.31582e-07,-3.4337e-06c-0.194039,-5.06355 -2.7698,-9.73752 -6.947,-12.606c-2.912,-2.005 -6.64,-4.875 -10.341,-8.569c-28.073,-28.073 -28.191,-73.639 0,-101.83l67.2,-67.19c28.239,-28.239 74.3,-28.069 102.325,0.51c27.75,28.3 26.872,73.934 -1.155,101.96l-13.087,13.087c-4.35,4.35 -5.769,10.79 -3.783,16.612c5.864,17.194 9.042,34.999 9.69,52.721c0.509,13.906 17.454,20.446 27.294,10.606l37.106,-37.106c59.271,-59.259 59.271,-155.699 0.001,-214.959Z" transform="scale(0.0390625)" fill="#FFF" />
+            </svg>
+          </template>
+          <template v-else>
+            Le lien a bien été copié
+            <svg
+              class="inline-block ml-1 -mr-1"
+              width="17"
+              height="18"
+              viewBox="0 0 20 20"
+            >
+              <g transform="scale(0.833333)">
+                <path fill="none" d="M0,0.001h24v24h-24Z" />
+                <path fill="#FFF" d="M12.042,2c-5.523,0 -10,4.477 -10,10c0,5.523 4.477,10 10,10c5.523,0 10,-4.477 10,-10c0,-5.523 -4.478,-10 -10,-10Zm-0.75,15.75l-5,-3.75l1.5,-2l3,2.25l5.25,-7l2,1.5l-6.75,9Z" />
+              </g>
+            </svg>
+          </template>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -146,6 +179,7 @@
 <script lang="ts">
 // @ts-nocheck
 import Vue from 'vue'
+import copy from 'copy-to-clipboard'
 import {
   PERIODS,
   convertDuration,
@@ -171,7 +205,8 @@ export default Vue.extend({
   },
   data () {
     return {
-      model: {}
+      model: {},
+      isCopySuccess: false
     }
   },
   computed: {
@@ -255,10 +290,21 @@ export default Vue.extend({
   methods: {
     formatDurationParts,
     initModel () {
+      this.isCopySuccess = false
       this.model = { ...this.value }
     },
     emitModel () {
       this.$emit('input', this.model)
+    },
+    async share () {
+      const url = location.href
+      const title = document.title
+      try {
+        await navigator.share({ url, title })
+      } catch (e) {
+        copy(url)
+        this.isCopySuccess = true
+      }
     }
   }
 })

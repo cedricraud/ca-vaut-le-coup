@@ -2,8 +2,10 @@
   <div>
     <h2>De quelle tâche parle-t-on&nbsp;?</h2>
     <textarea
+      v-model="model.task"
       class="placeholder-gray-600"
       placeholder="Ouvrir un fichier avec Alfred plutôt qu'en naviguant dossier par dossier."
+      @input="emitModel"
     />
 
     <h2 class="mt-6 tracking-tightest sm:tracking-tight">

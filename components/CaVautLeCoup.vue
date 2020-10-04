@@ -15,14 +15,15 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import Vue from 'vue'
-import { computeDuration, computeProfitableDuration } from '@/utils/duration'
+import { computeDuration, computeProfitableDuration, initPath, generatePath } from '@/utils/duration.ts'
 
 export default Vue.extend({
   data () {
     return {
       model: {
+        task: '',
         durationValue: 15,
         durationPeriod: 'seconds',
         amountValue: 5,
@@ -38,13 +39,20 @@ export default Vue.extend({
     }
   },
   created () {
-    this.computeDuration()
+    if (process.client) {
+      Object.assign(this.model, initPath(location.pathname))
+    }
+    this.computeDuration(false)
   },
   methods: {
-    computeDuration () {
+    computeDuration (updatePath) {
       this.totalDuration = computeDuration(this.model)
-      // @ts-ignore
       this.profitableDuration = computeProfitableDuration(this.model)
+
+      if (updatePath && process.client) {
+        const path = generatePath(this.model)
+        window.history.pushState({}, '', path)
+      }
     }
   }
 })
