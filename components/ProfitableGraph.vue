@@ -218,16 +218,17 @@ function renderGraph (graph) {
     .attr('y', node.y(graph.profitable.y))
     .text(formatSimpleDuration(graph.profitable.optimizationValue, graph.profitable.optimizationPeriod))
 
+  const profitableY = node.y(graph.profitable.y / 2) - 20
   node.profitableDurationIntroText
     .transition()
     .attr('x', node.x(graph.profitable.x))
-    .attr('y', node.y(graph.profitable.y))
+    .attr('y', profitableY)
     .text('Rentable à partir de')
 
   node.profitableDurationText
     .transition()
     .attr('x', node.x(graph.profitable.x))
-    .attr('y', node.y(graph.profitable.y))
+    .attr('y', profitableY)
     .text(formatSimpleDuration(graph.profitable.x, graph.profitable.period))
 
   graph.isInitialRendering = false
@@ -241,7 +242,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 150
+      default: 170
     }
   },
   data () {
@@ -376,59 +377,13 @@ svg {
 
     .profitable-duration-intro-text {
       @apply fill-current text-xs font-semibold text-blue-700 uppercase;
-      transform: translate(10px, 20px);
+      transform: translate(10px, 8px);
     }
 
     .profitable-duration-text {
       @apply fill-current text-3xl font-medium text-blue-700;
-      transform: translate(10px, 48px);
+      transform: translate(10px, 36px);
     }
   }
 }
-
-// svg::v-deep .cursor {
-//   stroke: $graph-purple-color;
-//   stroke-linecap: round;
-//   stroke-linejoin: round;
-//   stroke-width: 5px;
-//   cursor: col-resize;
-//   opacity: 0.8;
-
-//   &:hover {
-//     stroke-width: 7px;
-//   }
-// }
-
-// svg::v-deep .abscissa .hTick  {
-//   shape-rendering: crispedges;
-//   stroke: $graph-inner-border-color;
-//   stroke-linecap: round;
-//   stroke-linejoin: round;
-//   stroke-width: 1px;
-// }
-
-// svg::v-deep .abscissa .tick {
-//   shape-rendering: crispedges;
-//   stroke: $graph-outer-border-color;
-//   stroke-linecap: round;
-//   stroke-linejoin: round;
-//   stroke-width: 1px;
-
-//   &.major {
-//     stroke: darken($graph-accentblue-color, 10);
-//     stroke-width: 2px;
-//   }
-// }
-
-// svg::v-deep .abscissa .label {
-//   cursor: pointer;
-// }
-
-// svg::v-deep .label.name {
-//   @include font-semibold;
-// }
-
-// svg::v-deep .cursor-container .label.name {
-//   fill: $graph-purple-color;
-// }
 </style>

@@ -100,7 +100,7 @@
       Si l'optimisation vous prend X temps, en combien de temps serez-vous gagnant ?
     </div> -->
     <div class="mt-2">
-      Si cette optimisation vous prend
+      Si cela vous prend
       <div class="inline-block whitespace-no-wrap">
         <input
           v-model.number="model.optimizationValue"
@@ -136,14 +136,7 @@
           </div>
         </div>
       </div>
-      à mettre en place, vous serez gagnant
-      <template v-if="Number.parseInt(formattedProfitableDuration)">
-        à partir de
-        <span class="text-xl font-semibold text-blue-600 duration-label">{{ formattedProfitableDuration }}</span>.
-      </template>
-      <template v-else>
-        <span class="text-xl font-semibold text-blue-600 duration-label">immédiatement</span>.
-      </template>
+      à mettre en place, vous serez gagnant à partir de :
 
       <ProfitableGraph :model="model" />
     </div>

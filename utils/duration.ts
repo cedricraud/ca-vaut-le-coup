@@ -79,7 +79,7 @@ export function computeProfitableDuration (model: any) {
     secondsPerHorizon = computeDuration({ ...model, horizonValue, horizonPeriod }).seconds
   }
 
-  return getDuration(horizonValue, horizonPeriod)
+  return getDuration(horizonValue || 1, horizonPeriod)
 }
 
 export function computeGraphModel (graph: any, model: any) {
