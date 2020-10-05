@@ -38,7 +38,7 @@ export default {
 
     ],
     script: [
-      { src: 'https://cdn.usefathom.com/script.js', spa: 'auto', site: 'EVJHTOGB', defer: true }
+      { src: 'https://cdn.usefathom.com/script.js', site: 'EVJHTOGB', defer: true }
     ]
   },
   /*
