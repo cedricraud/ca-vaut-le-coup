@@ -30,6 +30,7 @@ export default Vue.extend({
   data () {
     return {
       model: {
+        'form-name': 'cvlc',
         task: '',
         durationValue: 15,
         durationPeriod: 'seconds',

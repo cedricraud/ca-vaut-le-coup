@@ -314,7 +314,7 @@ export default Vue.extend({
       // Send form to Netlify
       this.$axios.$post(
         location.origin + '/',
-        Object.keys({ 'form-name': 'cvlc', ...this.model })
+        Object.keys(this.model)
           .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(this.model[key])}`)
           .join('&'),
         {
