@@ -313,8 +313,8 @@ export default Vue.extend({
       window.fathom && window.fathom.trackPageview()
       // Send form to Netlify
       this.$axios.$post(
-        location.origin,
-        Object.keys(this.model)
+        location.origin + '/',
+        Object.keys({ 'form-name': 'cvlc', ...this.model })
           .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(this.model[key])}`)
           .join('&'),
         {
