@@ -142,6 +142,7 @@
 
       <div class="text-center">
         <button
+          type="button"
           class="px-6 py-2 mx-auto mt-4 text-sm font-bold text-white uppercase bg-blue-600 border-b-4 border-blue-700 rounded focus:outline-none hover:bg-blue-500 hover:border-blue-600"
           @click="share()"
         >
@@ -297,15 +298,28 @@ export default Vue.extend({
       this.$emit('input', this.model)
     },
     async share () {
+      // Copy to clipboard
       const url = location.href
       const title = document.title
       try {
+        // Use native share sheet on mobile
         await navigator.share({ url, title })
       } catch (e) {
+        // Fallback on clipboard
         copy(url)
         this.isCopySuccess = true
       }
+      // Send tracking to Fathom
       window.fathom && window.fathom.trackPageview()
+      // Send form to Netlify
+      this.$axios.$post(
+        '/',
+        Object.keys(this.model)
+          .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(this.model[key])}`)
+          .join('&'),
+        {
+          header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        })
     }
   }
 })

@@ -1,5 +1,11 @@
 <template>
-  <div class="grid max-w-screen-lg grid-cols-1 gap-6 mx-auto md:grid-cols-8">
+  <form
+    class="grid max-w-screen-lg grid-cols-1 gap-6 mx-auto md:grid-cols-8"
+    name="cvlc"
+    method="post"
+    data-netlify="true"
+    data-netlify-honeypot="bot-field"
+  >
     <Form
       v-model="model"
       class="box md:col-span-3"
@@ -12,7 +18,8 @@
       :profitable-duration="profitableDuration"
       @input="computeDuration"
     />
-  </div>
+    <input type="hidden" name="form-name" value="cvlc">
+  </form>
 </template>
 
 <script lang="js">
