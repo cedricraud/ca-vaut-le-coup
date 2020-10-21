@@ -6,6 +6,7 @@
       <div class="w-24 select-container">
         <select
           v-model.number="model.horizonValue"
+          name="horizonValue"
           class="py-1 mb-1 sm:mb-0 sm:py-2"
           @change="emitModel"
         >
@@ -104,6 +105,7 @@
       <div class="inline-block whitespace-no-wrap">
         <input
           v-model.number="model.optimizationValue"
+          name="optimizationValue"
           type="number"
           class="py-1 my-1 sm:py-2 sm:my-0"
           step="1"
@@ -116,6 +118,7 @@
         <div class="w-32 select-container">
           <select
             v-model="model.optimizationPeriod"
+            name="optimizationPeriod"
             class="py-1 my-1 sm:py-2 sm:my-0 sm:mb-1"
             @change="emitModel"
           >

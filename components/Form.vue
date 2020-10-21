@@ -3,6 +3,7 @@
     <h2>De quelle tâche parle-t-on&nbsp;?</h2>
     <textarea
       v-model="model.task"
+      name="task"
       class="placeholder-gray-600"
       placeholder="Ouvrir un fichier avec Alfred plutôt qu'en naviguant dossier par dossier."
       @input="emitModel"
@@ -14,6 +15,7 @@
     <div class="text-center">
       <input
         v-model.number="model.durationValue"
+        name="durationValue"
         type="number"
         step="1"
         min="1"
@@ -25,6 +27,7 @@
       <div class="w-32 select-container">
         <select
           v-model="model.durationPeriod"
+          name="durationPeriod"
           @change="emitModel"
         >
           <option value="seconds">
@@ -50,6 +53,7 @@
     <div class="text-center">
       <input
         v-model.number="model.amountValue"
+        name="amountValue"
         type="number"
         step="1"
         min="1"
@@ -62,6 +66,7 @@
       <div class="w-36 select-container">
         <select
           v-model="model.amountPeriod"
+          name="amountPeriod"
           @change="emitModel"
         >
           <option value="days">
