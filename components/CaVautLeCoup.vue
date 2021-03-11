@@ -19,6 +19,7 @@
       @input="computeDuration"
     />
     <input type="hidden" name="form-name" value="cvlc">
+    <input type="hidden" name="url">
   </form>
 </template>
 
