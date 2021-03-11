@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{278:function(t,e,n){"use strict";n.r(e);var l=n(21),component=Object(l.a)({},(function(){var t=this.$createElement;return(this._self._c||t)("CaVautLeCoup")}),[],!1,null,null,null);e.default=component.exports;installComponents(component,{CaVautLeCoup:n(194).default})}}]);
