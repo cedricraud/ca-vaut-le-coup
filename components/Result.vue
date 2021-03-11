@@ -315,10 +315,11 @@ export default Vue.extend({
       // Send tracking to Fathom
       window.fathom && window.fathom.trackPageview()
       // Send form to Netlify
+      const data = { ...this.model, url: location.href }
       this.$axios.$post(
         location.origin + '/',
-        Object.keys(this.model)
-          .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(this.model[key])}`)
+        Object.keys(data)
+          .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`)
           .join('&'),
         {
           header: { 'Content-Type': 'application/x-www-form-urlencoded' }
