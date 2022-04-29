@@ -1,17 +1,15 @@
 <template>
   <div>
-    <h2>De quelle tâche parle-t-on&nbsp;?</h2>
+    <h2 v-t="'form.task.question'" />
     <textarea
       v-model="model.task"
       name="task"
       class="placeholder-gray-600"
-      placeholder="Ouvrir un fichier avec Alfred plutôt qu'en naviguant dossier par dossier."
+      :placeholder="$t('form.task.placeholder')"
       @input="emitModel"
     />
 
-    <h2 class="mt-6 tracking-tightest sm:tracking-tight">
-      Combien de temps vous ferait-elle gagner&nbsp;?
-    </h2>
+    <h2 v-t="'form.durationValue.question'" class="mt-6 tracking-tightest sm:tracking-tight" />
     <div class="text-center">
       <input
         v-model.number="model.durationValue"
@@ -30,15 +28,9 @@
           name="durationPeriod"
           @change="emitModel"
         >
-          <option value="seconds">
-            secondes
-          </option>
-          <option value="minutes">
-            minutes
-          </option>
-          <option value="hours">
-            heures
-          </option>
+          <option v-t="'duration.seconds'" value="seconds" />
+          <option v-t="'duration.minutes'" value="minutes" />
+          <option v-t="'duration.hours'" value="hours" />
         </select>
         <div class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
           <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
@@ -47,9 +39,7 @@
     </div>
     <h2 />
 
-    <h2 class="mt-6">
-      Quelle est sa fréquence&nbsp;?
-    </h2>
+    <h2 v-t="'form.durationPeriod.question'" class="mt-6" />
     <div class="text-center">
       <input
         v-model.number="model.amountValue"
@@ -62,7 +52,7 @@
         @focus="$event.target.select()"
         @input="emitModel"
       >
-      <span class="px-1">fois</span>
+      <span v-t="'period.times'" class="px-1" />
       <div class="w-36 select-container">
         <select
           v-model="model.amountPeriod"
@@ -70,18 +60,20 @@
           @change="emitModel"
         >
           <option value="days">
-            par jour
+            {{ $t('period.per') }} {{ $t('duration.days') }}
           </option>
           <option value="weeks">
-            par semaine
+            {{ $t('period.per') }} {{ $t('duration.weeks') }}
           </option>
           <option value="months">
-            par mois
+            {{ $t('period.per') }} {{ $t('duration.months') }}
           </option>
           <option value="years">
-            par an
+            {{ $t('period.per') }} {{ $t('duration.years') }}
           </option>
+
           <!-- <option>tous les 10 ans</option> -->
+          </option>
         </select>
         <div class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
           <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>

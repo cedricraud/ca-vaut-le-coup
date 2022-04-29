@@ -9,13 +9,13 @@ import * as d3 from 'd3'
 import debounce from 'lodash.debounce'
 import { computeGraphModel, formatSimpleDuration } from '@/utils/duration.ts'
 
-function formatXTick (graph) {
+function formatXTick (graph, i18n) {
   return (d) => {
-    return d && formatSimpleDuration(d, graph.profitable.period)
+    return d && formatSimpleDuration(i18n, d, graph.profitable.period)
   }
 }
 
-function initGraph (svg, viewport) {
+function initGraph (svg, viewport, i18n) {
   const node = {}
 
   // Init d3
@@ -35,7 +35,7 @@ function initGraph (svg, viewport) {
     .attr('class', 'y-axis')
   node.yText = node.viewport.append('text')
     .attr('class', 'y-text')
-    .text('Temps passé')
+    .text(i18n.t('result.profitable.timeSpent'))
   node.xAxis = node.viewport.append('g')
     .attr('class', 'x-axis')
   node.profitableRect = node.viewport.append('rect')
@@ -82,7 +82,7 @@ function generateClosedPath (pointA, pointB, pointC, pointD) {
   return path
 }
 
-function renderGraph (graph) {
+function renderGraph (graph, i18n) {
   const viewport = graph.viewport
   const node = graph.node
 
@@ -103,7 +103,7 @@ function renderGraph (graph) {
   const xAxisGenerator = d3.axisBottom(node.x)
     .ticks(4)
     .tickSize(7)
-    .tickFormat(formatXTick(graph))
+    .tickFormat(formatXTick(graph, i18n))
   node.xAxis
     .attr('transform', `translate(0,${viewport.innerHeight})`)
     .transition()
@@ -216,20 +216,20 @@ function renderGraph (graph) {
   node.profitableText
     .transition()
     .attr('y', node.y(graph.profitable.y))
-    .text(formatSimpleDuration(graph.profitable.optimizationValue, graph.profitable.optimizationPeriod))
+    .text(formatSimpleDuration(i18n, graph.profitable.optimizationValue, graph.profitable.optimizationPeriod))
 
   const profitableY = node.y(graph.profitable.y / 2) - 20
   node.profitableDurationIntroText
     .transition()
     .attr('x', node.x(graph.profitable.x))
     .attr('y', profitableY)
-    .text('Rentable à partir de')
+    .text(i18n.t('result.profitable.gain'))
 
   node.profitableDurationText
     .transition()
     .attr('x', node.x(graph.profitable.x))
     .attr('y', profitableY)
-    .text(formatSimpleDuration(graph.profitable.x, graph.profitable.period))
+    .text(formatSimpleDuration(i18n, graph.profitable.x, graph.profitable.period))
 
   graph.isInitialRendering = false
 }
@@ -281,11 +281,11 @@ export default {
   },
   methods: {
     init () {
-      this.graph = initGraph(this.$refs.svgNode, this.viewport)
+      this.graph = initGraph(this.$refs.svgNode, this.viewport, this.$i18n)
     },
     render: debounce(function () {
       computeGraphModel(this.graph, this.model)
-      renderGraph(this.graph)
+      renderGraph(this.graph, this.$i18n)
     }, 300)
   }
 }

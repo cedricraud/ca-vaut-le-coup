@@ -1,28 +1,41 @@
 <template>
   <div>
     <header class="p-6 text-center">
-      <h1>
-        <a class="raw" href="/">
-          <div>Ça vaut</div>
-          <div>le coup&nbsp;?</div>
+      <nuxt-link class="float-right no-underline" :to="localePath('index', otherLocale)">
+        <img :src="`/locales/${otherLocale}.svg`">
+      </nuxt-link>
+      <h1 :class="$i18n.locale">
+        <a class="raw" :href="localePath('index')">
+          <div v-t="'header.title1'" /><br>
+          <div v-t="'header.title2'" />
         </a>
       </h1>
-      <div class="mx-auto mt-6 text-lg text-blue-900 slogan">
-        Un calculateur de temps gagné pour comprendre
-        que les petits ruisseaux font les grandes rivières.
-      </div>
+      <div v-t="'header.tagline'" class="mx-auto mt-6 text-lg text-blue-900 whitespace-pre-line slogan" />
     </header>
     <Nuxt />
-    <footer class="py-6 leading-relaxed text-center text-gray-600">
-      Conçu par
-      <a target="_blank" href="https://jonathanlefevre.com">Jonathan Lefèvre</a>
-      et
-      <a target="_blank" href="https://twitter.com/CedricRaud">Cédric Raud</a>,
-      inspiré par
-      <a target="_blank" href="https://xkcd.com/1205/">XKCD</a>.
-    </footer>
+    <footer class="py-6 leading-relaxed text-center text-gray-600" v-html="$t('footer')" />
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    otherLocale () {
+      return this.$i18n.locale === 'fr' ? 'es' : 'fr'
+    }
+  },
+  head () {
+    return {
+      title: this.$t('meta.title'),
+      meta: [
+        { hid: 'description', name: 'description', content: this.$t('meta.description') },
+        { name: 'application-name', content: this.$t('meta.title') },
+        { property: 'og:image', content: `https://www.cvlc.fr/thumbnail-${this.$i18n.locale}.png` }
+      ]
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 html,
@@ -54,10 +67,18 @@ h1 {
   line-height: 40px;
 
   div {
+    display: inline-block;
     transform: rotate(-3deg);
 
     &:last-child {
       margin-left: 118px;
+    }
+  }
+
+  // ES skin
+  &.es {
+    div:last-child {
+      margin-left: 18px;
     }
   }
 }
@@ -111,6 +132,6 @@ select {
 }
 
 .slogan {
-  max-width: 400px;
+  max-width: 500px;
 }
 </style>

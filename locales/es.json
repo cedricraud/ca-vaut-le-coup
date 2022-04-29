@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "title": "¿Vale la pena?",
+    "description": "Una calculadora de tiempo ganado para entender que los pequeños riachuelos pueden formar grandes riberas."
+  },
+  "header": {
+    "title1": "¿Vale",
+    "title2": "la pena?",
+    "tagline": "Una calculadora de tiempo ganado para entender\nque los pequeños riachuelos pueden formar grandes riberas."
+  },
+  "form": {
+    "task": {
+      "question": "¿De que tareas hablamos?",
+      "placeholder": "Lavar la vajilla."
+    },
+    "durationValue": {
+      "question": "¿Cuanto tiempo te hará ganar?"
+    },
+    "durationPeriod": {
+      "question": "¿Cuál es su frecuencia?"
+    }
+  },
+  "result": {
+    "horizon": {
+      "title": "Tiempo ganado",
+      "intro1": "Sobre un periodo de",
+      "intro2": "esta optimización te hará ganar:",
+      "lifeTime": "Tiempo de  vida",
+      "workTime": "Tiempo de trabajo",
+      "or": "Seo",
+      "jokes1": "O el tiempo  de contar",
+      "jokes2": "chieste",
+      "jokes3": "de buena calidad.",
+      "jokingTime": "¡A razón de una broma cada minuto y medio!"
+    },
+    "optimization": {
+      "title": "Techo de rentabilidad",
+      "intro1": "Si te toma",
+      "intro2": "a poner en marcha , tu eres ganador a partir de:"
+    },
+    "profitable": {
+      "timeSpent": "Tiempo pasado",
+      "gain": "Rentable a partir de"
+    },
+    "share": {
+      "action": "Comparte el enlace",
+      "success": "El enlace se ha copiado con éxito."
+    }
+  },
+  "duration": {
+    "seconds": "segundo",
+    "minutes": "minuto",
+    "hours": "hora",
+    "days": "día",
+    "weeks": "semana",
+    "months": "mes",
+    "years": "año"
+  },
+  "period": {
+    "times": "veces",
+    "per": "por"
+  },
+  "footer": "Realizado por <a target='_blank' href='https://jonathanlefevre.com'>Jonathan Lefèvre</a> y <a target='_blank' href='https://twitter.com/CedricRaud'>Cédric Raud</a>, traducido por <a target='_blank' href='https://twitter.com/renebarma'>Rene Barragan</a>, inspirado por <a target='_blank' href='https://xkcd.com/1205/'>XKCD</a>."
+}

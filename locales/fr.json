@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "title": "Ça vaut le coup ?",
+    "description": "Un calculateur de temps gagné pour comprendre que les petits ruisseaux font les grandes rivières."
+  },
+  "header": {
+    "title1": "Ça vaut",
+    "title2": "le coup ?",
+    "tagline": "Un calculateur de temps gagné pour comprendre\nque les petits ruisseaux font les grandes rivières."
+  },
+  "form": {
+    "task": {
+      "question": "De quelle tâche parle-t-on ?",
+      "placeholder": "Ouvrir un fichier avec Alfred plutôt qu'en naviguant dossier par dossier."
+    },
+    "durationValue": {
+      "question": "Combien de temps vous ferait-elle gagner ?"
+    },
+    "durationPeriod": {
+      "question": "Quelle est sa fréquence ?"
+    }
+  },
+  "result": {
+    "horizon": {
+      "title": "Temps gagné",
+      "intro1": "Sur un horizon de",
+      "intro2": "cette optimisation vous fera gagner :",
+      "lifeTime": "Temps de vie",
+      "workTime": "Temps de travail",
+      "or": "Soit",
+      "jokes1": "Ou le temps de raconter",
+      "jokes2": "blague",
+      "jokes3": "de qualité discutable.",
+      "jokingTime": "Au rythme d’une blague toutes les minutes et demi !"
+    },
+    "optimization": {
+      "title": "Seuil de rentabilité",
+      "intro1": "Si cela vous prend",
+      "intro2": "à mettre en place, vous serez gagnant à partir de :"
+    },
+    "profitable": {
+      "timeSpent": "Temps passé",
+      "gain": "Rentable à partir de"
+    },
+    "share": {
+      "action": "Partager le lien",
+      "success": "Le lien a bien été copié"
+    }
+  },
+  "duration": {
+    "seconds": "seconde",
+    "minutes": "minute",
+    "hours": "heure",
+    "days": "jour",
+    "weeks": "semaine",
+    "months": "mois",
+    "years": "an"
+  },
+  "period": {
+    "times": "fois",
+    "per": "par"
+  },
+  "footer": "Conçu par <a target='_blank' href='https://jonathanlefevre.com'>Jonathan Lefèvre</a> et <a target='_blank' href='https://twitter.com/CedricRaud'>Cédric Raud</a>, inspiré par <a target='_blank' href='https://xkcd.com/1205/'>XKCD</a>."
+}

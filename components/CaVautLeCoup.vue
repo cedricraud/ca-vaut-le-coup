@@ -49,7 +49,7 @@ export default Vue.extend({
   },
   created () {
     if (process.client) {
-      Object.assign(this.model, initPath(location.pathname))
+      Object.assign(this.model, initPath(this.$i18n, location.pathname))
     }
     this.computeDuration(false)
   },
@@ -59,7 +59,7 @@ export default Vue.extend({
       this.profitableDuration = computeProfitableDuration(this.model)
 
       if (updatePath && process.client) {
-        const path = generatePath(this.model)
+        const path = generatePath(this.$i18n, this.model, this.$i18n.locale)
         window.history.pushState({}, '', path)
       }
     }

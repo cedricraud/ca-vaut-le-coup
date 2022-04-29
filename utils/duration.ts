@@ -1,19 +1,25 @@
 // @ts-nocheck
 import { durationToUnit } from '@ryki/datemath'
 
-export const PERIODS = {
-  seconds: 'seconde',
-  minutes: 'minute',
-  hours: 'heure',
-  days: 'jour',
-  weeks: 'semaine',
-  months: 'mois',
-  years: 'an'
+export function getPeriods (i18n) {
+  return {
+    seconds: i18n.t('duration.seconds'),
+    minutes: i18n.t('duration.minutes'),
+    hours: i18n.t('duration.hours'),
+    days: i18n.t('duration.days'),
+    weeks: i18n.t('duration.weeks'),
+    months: i18n.t('duration.months'),
+    years: i18n.t('duration.years')
+  }
 }
-export const INVERTED_PERIODS = Object.keys(PERIODS).reduce((ret: Object, key: string) => {
-  ret[PERIODS[key]] = key
-  return ret
-}, {})
+
+export function getInvertedPeriods (i18n) {
+  const periods = getPeriods(i18n)
+  return Object.keys(periods).reduce((ret: Object, key: string) => {
+    ret[periods[key]] = key
+    return ret
+  }, {})
+}
 
 const DEFAULT_OPTIMIZATION_VALUE = 30
 const DEFAULT_OPTIMIZATION_PERIOD = 'minutes'
@@ -50,8 +56,8 @@ export function formatDuration (durationObject: Object, unit: string, name: stri
   return formatDurationParts(durationObject, unit, name, isAtomic).join(' ')
 }
 
-export function formatSimpleDuration (duration: number, period: string) {
-  return formatDuration(getDuration(duration, period), period, (<any> PERIODS)[period], false)
+export function formatSimpleDuration (i18n, duration: number, period: string) {
+  return formatDuration(getDuration(duration, period), period, getPeriods(i18n)[period], false)
 }
 
 function getDuration (value:number, period:string) {
@@ -116,12 +122,14 @@ export function computeGraphModel (graph: any, model: any) {
   }
 }
 
-function unformatPeriod (period: string) {
-  return INVERTED_PERIODS[period] || INVERTED_PERIODS[period.slice(0, -1)]
+function unformatPeriod (i18n, period: string) {
+  const invertedPeriods = getInvertedPeriods(i18n)
+  return invertedPeriods[period] || invertedPeriods[period.slice(0, -1)]
 }
 
-function formatPeriod (period: string, amount: numer = 1) {
-  return pluralize(PERIODS[period], amount)
+export function formatPeriod (i18n, period: string, amount: numer = 1) {
+  const periods = getPeriods(i18n)
+  return pluralize(periods[period], amount)
 }
 
 // Based on https://gist.github.com/codeguy/6684588
@@ -145,18 +153,21 @@ function unslugify (text) {
     .replace(new RegExp(SLUG_SEPARATOR, 'g'), ' ')
 }
 
-export function initPath (path) {
-  const pathParts = path.split('/')
+export function initPath (i18n, path) {
+  const pathParts = decodeURI(path).split('/')
+  if (['es'].includes(pathParts[1])) {
+    pathParts.splice(1, 1)
+  }
   const modelParts = (pathParts[1] || '').split('-')
 
   if (modelParts.length === 6 || modelParts.length === 9) {
     const task = unslugify(pathParts[2] || '')
     const durationValue = +modelParts[0]
-    const durationPeriod = unformatPeriod(modelParts[1])
+    const durationPeriod = unformatPeriod(i18n, modelParts[1])
     const amountValue = +modelParts[2]
-    const amountPeriod = unformatPeriod(modelParts[5])
+    const amountPeriod = unformatPeriod(i18n, modelParts[5])
     const optimizationValue = modelParts[7] ? +modelParts[7] : DEFAULT_OPTIMIZATION_VALUE
-    const optimizationPeriod = modelParts[8] ? unformatPeriod(modelParts[8]) : DEFAULT_OPTIMIZATION_PERIOD
+    const optimizationPeriod = modelParts[8] ? unformatPeriod(i18n, modelParts[8]) : DEFAULT_OPTIMIZATION_PERIOD
 
     return { task, durationValue, durationPeriod, amountValue, amountPeriod, optimizationValue, optimizationPeriod }
   } else {
@@ -164,9 +175,10 @@ export function initPath (path) {
   }
 }
 
-export function generatePath (model: any) {
+export function generatePath (i18n: Object, model: any) {
+  const localePrefix = i18n.locale !== 'fr' ? i18n.locale + '/' : ''
   const { task, durationValue, durationPeriod, amountValue, amountPeriod, optimizationValue, optimizationPeriod } = model
-  const formattedOptimization = optimizationValue !== DEFAULT_OPTIMIZATION_VALUE || optimizationPeriod !== DEFAULT_OPTIMIZATION_PERIOD ? `-vs-${optimizationValue}-${formatPeriod(optimizationPeriod, optimizationValue)}` : ''
+  const formattedOptimization = optimizationValue !== DEFAULT_OPTIMIZATION_VALUE || optimizationPeriod !== DEFAULT_OPTIMIZATION_PERIOD ? `-vs-${optimizationValue}-${formatPeriod(i18n, optimizationPeriod, optimizationValue, i18n)}` : ''
   const formattedTask = slugify(task) ? '/' + slugify(task) : ''
-  return `/${durationValue}-${formatPeriod(durationPeriod, durationValue)}-${amountValue}-fois-par-${formatPeriod(amountPeriod)}${formattedOptimization}${formattedTask}`
+  return `/${localePrefix}${durationValue}-${formatPeriod(i18n, durationPeriod, durationValue)}-${amountValue}-${i18n.t('period.times')}-${i18n.t('period.per')}-${formatPeriod(i18n, amountPeriod)}${formattedOptimization}${formattedTask}`
 }

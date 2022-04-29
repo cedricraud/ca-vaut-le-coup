@@ -1,8 +1,8 @@
 <template>
   <div class="small-inputs">
-    <h2>Temps gagné</h2>
+    <h2 v-t="'result.horizon.title'" />
     <div>
-      Sur un horizon de
+      {{ $t('result.horizon.intro1') }}
       <div class="w-24 select-container">
         <select
           v-model.number="model.horizonValue"
@@ -11,22 +11,22 @@
           @change="emitModel"
         >
           <option value="1">
-            1 an
+            1 {{ formatPeriod($i18n, 'years', 1) }}
           </option>
           <option value="2">
-            2 ans
+            2 {{ formatPeriod($i18n, 'years', 2) }}
           </option>
           <option value="3">
-            3 ans
+            3 {{ formatPeriod($i18n, 'years', 2) }}
           </option>
           <option value="4">
-            4 ans
+            4 {{ formatPeriod($i18n, 'years', 2) }}
           </option>
           <option value="5">
-            5 ans
+            5 {{ formatPeriod($i18n, 'years', 2) }}
           </option>
           <option value="10">
-            10 ans
+            10 {{ formatPeriod($i18n, 'years', 2) }}
           </option>
           <!-- <option>Autre…</option> -->
         </select>
@@ -36,13 +36,13 @@
           </svg>
         </div>
       </div>
-      cette optimisation vous fera gagner&nbsp;:
+      {{ $t('result.horizon.intro2') }}
     </div>
     <div class="text-center">
       <div
         class="inline-flex items-center mt-4 mb-1 text-gray-700"
       >
-        <label>Temps de vie</label>
+        <label v-t="'result.horizon.lifeTime'" />
         <div class="relative inline-block w-10 mx-2 align-middle transition duration-200 ease-in">
           <input
             id="toggle"
@@ -55,17 +55,16 @@
           <label for="toggle" class="block h-6 overflow-hidden bg-white border-2 border-gray-500 rounded-full cursor-pointer select-none toggle-label" />
         </div>
         <label
+          v-t="'result.horizon.workTime'"
           class="cursor-help"
           title="Le temps de travail est une estimation sur la base d’une semaine de 35 heures avec 5 semaines de congés par an."
-        >Temps de travail</label>
+        />
       </div>
       <div class="mt-4 text-3xl font-semibold text-blue-600 duration-label">
         {{ formattedDuration }}
       </div>
       <div v-if="visiblePeriods.length" class="grid items-center grid-cols-2 gap-6 mt-4 -ml-32 text-lg">
-        <div class="text-right">
-          Soit
-        </div>
+        <div v-t="'result.horizon.or'" class="text-right" />
         <div class="text-left duration-label">
           <table>
             <tbody>
@@ -87,21 +86,19 @@
       <div
         v-if="Number.parseInt(formattedJokes)"
         class="mt-4 text-gray-700 duration-label cursor-help"
-        title="Au rythme d’une blague toutes les minutes et demi !"
+        :title="$t('result.horizon.jokingTime')"
       >
-        Ou le temps de raconter {{ formattedJokes }} de qualité discutable.
+        {{ $t('result.horizon.jokes1') }} {{ formattedJokes }} {{ $t('result.horizon.jokes3') }}
       </div>
     </div>
 
-    <h2 class="mt-6">
-      Seuil de rentabilité
-    </h2>
+    <h2 v-t="'result.optimization.title'" class="mt-6" />
     <!-- <div class="text-gray-700">
       Au bout de combien de temps gagnez-vous à mettre en place cette optimisation&nbsp;? -> Mauvaise question
       Si l'optimisation vous prend X temps, en combien de temps serez-vous gagnant ?
     </div> -->
     <div class="mt-2">
-      Si cela vous prend
+      {{ $t('result.optimization.intro1') }}
       <div class="inline-block whitespace-no-wrap">
         <input
           v-model.number="model.optimizationValue"
@@ -123,13 +120,13 @@
             @change="emitModel"
           >
             <option value="seconds">
-              secondes
+              {{ formatPeriod($i18n, 'seconds', 2) }}
             </option>
             <option value="minutes">
-              minutes
+              {{ formatPeriod($i18n, 'minutes', 2) }}
             </option>
             <option value="hours">
-              heures
+              {{ formatPeriod($i18n, 'hours', 2) }}
             </option>
           </select>
           <div class="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
@@ -139,7 +136,7 @@
           </div>
         </div>
       </div>
-      à mettre en place, vous serez gagnant à partir de :
+      {{ $t('result.optimization.intro2') }}
 
       <ProfitableGraph :model="model" />
 
@@ -150,7 +147,7 @@
           @click="share()"
         >
           <template v-if="!isCopySuccess">
-            Partager le lien
+            {{ $t('result.share.action') }}
             <svg
               class="inline-block ml-1 -mr-1"
               width="14"
@@ -161,7 +158,7 @@
             </svg>
           </template>
           <template v-else>
-            Le lien a bien été copié
+            {{ $t('result.share.success') }}
             <svg
               class="inline-block ml-1 -mr-1"
               width="17"
@@ -185,11 +182,12 @@
 import Vue from 'vue'
 import copy from 'copy-to-clipboard'
 import {
-  PERIODS,
   convertDuration,
   isDurationSignificant,
   formatDuration,
-  formatDurationParts
+  formatPeriod,
+  formatDurationParts,
+  getPeriods
 } from '@/utils/duration'
 
 export default Vue.extend({
@@ -215,11 +213,11 @@ export default Vue.extend({
   },
   computed: {
     periods () {
-      return PERIODS
+      return getPeriods(this.$i18n)
     },
     visiblePeriods () {
       return Object.keys(this.periods).reduce((memo, period) => {
-        const name = PERIODS[period]
+        const name = this.periods[period]
         if (
           isDurationSignificant(this.totalDuration, period) &&
           !this.formattedDuration.includes(name)
@@ -233,7 +231,7 @@ export default Vue.extend({
       const duration = Math.round(
         convertDuration(this.totalDuration, 'seconds') / 90
       )
-      const name = 'blague'
+      const name = this.$t('result.horizon.jokes2')
       return `${duration.toLocaleString()} ${name}${
         duration > 1 && name[name.length - 1] !== 's' ? 's' : ''
       }`
@@ -241,7 +239,7 @@ export default Vue.extend({
     formattedProfitableDuration () {
       const profitableDuration = this.profitableDuration
       const period = Object.keys(profitableDuration)[0]
-      const name = PERIODS[period]
+      const name = this.periods[period]
       return formatDuration(profitableDuration, period, name, true)
     },
     formattedDuration () {
@@ -292,6 +290,7 @@ export default Vue.extend({
     this.initModel()
   },
   methods: {
+    formatPeriod,
     formatDurationParts,
     initModel () {
       this.isCopySuccess = false

@@ -17,15 +17,11 @@ export default {
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    title: 'Ça vaut le coup ?',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
-      { hid: 'description', name: 'description', content: 'Un calculateur de temps gagné pour comprendre que les petits ruisseaux font les grandes rivières.' },
-      { name: 'application-name', content: 'Ça vaut le coup ?' },
       { name: 'msapplication-TileColor', content: '#FFFFFF' },
-      { name: 'msapplication-TileImage', content: '/mstile-144x144.png' },
-      { property: 'og:image', content: 'https://www.cvlc.fr/thumbnail.png' }
+      { name: 'msapplication-TileImage', content: '/mstile-144x144.png' }
 
     ],
     link: [
@@ -69,8 +65,29 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/i18n'
   ],
+  /*
+  ** i18n
+  */
+  i18n: {
+    locales: [
+      {
+        code: 'fr',
+        iso: 'fr-FR',
+        file: 'fr.json'
+      },
+      {
+        code: 'es',
+        iso: 'es-ES',
+        file: 'es.json'
+      }
+    ],
+    strategy: 'prefix_except_default',
+    defaultLocale: 'fr',
+    langDir: 'locales'
+  },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
